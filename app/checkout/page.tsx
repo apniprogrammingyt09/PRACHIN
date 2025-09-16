@@ -173,8 +173,10 @@ export default function CheckoutPage() {
 
   const calculateTotals = () => {
     const subtotal = totalPrice
-    const deliveryFee = 40
-    const tax = subtotal * 0.05
+    // Free delivery for orders above ₹500, otherwise ₹50 for Ayurvedic products
+    const deliveryFee = subtotal >= 500 ? 0 : 50
+    // GST for cosmetics/personal care products is 18%
+    const tax = subtotal * 0.18
     const discount = appliedCoupon ? appliedCoupon.discountAmount : 0
     const total = subtotal + deliveryFee + tax - discount
 
@@ -764,8 +766,15 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-[#A67C52]">Delivery Fee</span>
-                    <span className="text-[#8B4513]">₹{totals.deliveryFee.toFixed(2)}</span>
+                    <span className={totals.deliveryFee === 0 ? "text-green-600" : "text-[#8B4513]"}>
+                      {totals.deliveryFee === 0 ? "FREE" : `₹${totals.deliveryFee.toFixed(2)}`}
+                    </span>
                   </div>
+                  {totals.deliveryFee === 0 && totals.subtotal >= 500 && (
+                    <div className="text-xs text-green-600 text-right -mt-1">
+                      Free delivery on orders ₹500+
+                    </div>
+                  )}
                   <div className="flex justify-between">
                     <span className="text-[#A67C52]">Tax</span>
                     <span className="text-[#8B4513]">₹{totals.tax.toFixed(2)}</span>

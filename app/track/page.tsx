@@ -394,39 +394,96 @@ export default function TrackOrderPage() {
             {/* Payment Status Card */}
             <PaymentStatusCard order={order} />
 
-            {/* Order Progress */}
+            {/* Order Progress Timeline */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-green-800">Order Progress</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="relative py-8">
-                  {/* Status Steps - Main Flow */}
+                <div className="space-y-6">
                   {["pending", "confirmed", "preparing", "ready", "out_for_delivery", "delivered"].map(
                     (status, index) => {
                       const Icon = statusIcons[status as keyof typeof statusIcons]
                       const label = statusLabels[status as keyof typeof statusLabels]
                       const isCompleted = Object.keys(statusLabels).indexOf(order.status) >= index
                       const isCurrent = order.status === status
+                      const isLast = index === 5
 
                       return (
-                        <div key={status} className="flex flex-col items-center text-center relative z-10">
-                          <div
-                            className={`
-                            w-12 h-12 rounded-full flex items-center justify-center mb-3 transition-colors border-4 border-white shadow-lg
-                            ${isCompleted ? "bg-emerald-600 text-white" : "bg-gray-200 text-gray-500"}
-                            ${isCurrent ? "ring-4 ring-green-100 ring-opacity-50 scale-110" : ""}
-                          `}
-                          >
-                            <Icon className="h-5 w-5" />
+                        <div key={status} className="relative flex items-start">
+                          {/* Timeline Line */}
+                          {!isLast && (
+                            <div className="absolute left-6 top-12 w-0.5 h-16 bg-gray-200">
+                              <div 
+                                className={`w-full transition-all duration-500 ${
+                                  isCompleted ? "bg-emerald-600 h-full" : "bg-gray-200 h-0"
+                                }`}
+                              ></div>
+                            </div>
+                          )}
+                          
+                          {/* Timeline Node */}
+                          <div className="flex-shrink-0 relative z-10">
+                            <div
+                              className={`
+                                w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300
+                                ${isCompleted 
+                                  ? "bg-emerald-600 text-white shadow-lg" 
+                                  : "bg-gray-200 text-gray-500"
+                                }
+                                ${isCurrent 
+                                  ? "ring-4 ring-emerald-100 scale-110 shadow-xl" 
+                                  : ""
+                                }
+                              `}
+                            >
+                              <Icon className="h-5 w-5" />
+                            </div>
                           </div>
-                          <p
-                            className={`text-xs font-medium max-w-[80px] leading-tight ${
-                              isCompleted ? "text-green-800" : "text-gray-500"
-                            }`}
-                          >
-                            {label}
-                          </p>
+                          
+                          {/* Timeline Content */}
+                          <div className="ml-6 flex-1">
+                            <div 
+                              className={`
+                                p-4 rounded-lg border-2 transition-all duration-300
+                                ${isCompleted 
+                                  ? "bg-emerald-50 border-emerald-200" 
+                                  : "bg-gray-50 border-gray-200"
+                                }
+                                ${isCurrent 
+                                  ? "shadow-md border-emerald-300 bg-emerald-100" 
+                                  : ""
+                                }
+                              `}
+                            >
+                              <h4 
+                                className={`font-semibold text-sm ${
+                                  isCompleted ? "text-emerald-800" : "text-gray-600"
+                                }`}
+                              >
+                                {label}
+                              </h4>
+                              <p 
+                                className={`text-xs mt-1 ${
+                                  isCompleted ? "text-emerald-600" : "text-gray-500"
+                                }`}
+                              >
+                                {status === "pending" && "Your order has been placed successfully"}
+                                {status === "confirmed" && "Order confirmed and payment verified"}
+                                {status === "preparing" && "Your wellness products are being prepared"}
+                                {status === "ready" && "Order is ready for pickup or dispatch"}
+                                {status === "out_for_delivery" && "Your order is on the way"}
+                                {status === "delivered" && "Order delivered successfully"}
+                              </p>
+                              {isCurrent && (
+                                <div className="mt-2">
+                                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-emerald-600 text-white">
+                                    Current Status
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
                         </div>
                       )
                     },
@@ -506,10 +563,12 @@ export default function TrackOrderPage() {
                       <h4 className="font-medium text-green-800">Estimated Delivery</h4>
                       <p className="text-green-600">
                         {order.status === "out_for_delivery"
-                          ? "Your wellness products are on the way! Expected within 30 minutes."
+                          ? "Your Ayurvedic oils and shampoo are on the way! Expected delivery within 2-3 business days."
                           : order.status === "ready"
-                            ? "Your order is ready for pickup or will be dispatched soon."
-                            : "Your order is being prepared. Estimated delivery in 45-60 minutes."}
+                            ? "Your premium Ayurvedic products are ready for dispatch. Expected delivery in 3-5 business days."
+                            : order.status === "preparing"
+                              ? "Your natural oils and shampoo are being carefully prepared and quality checked. Expected delivery in 4-6 business days."
+                              : "Your Ayurvedic wellness products will be processed and shipped within 1-2 business days."}
                       </p>
                     </div>
                   </div>

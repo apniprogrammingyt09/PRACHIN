@@ -91,19 +91,31 @@ export default function OrdersPage() {
   useEffect(() => {
     if (!isOrdersCached) {
       refreshOrders()
+    } else if (orders.length > 0 && !orders[0].orderNumber) {
+      // If orders exist but seem incomplete, refresh
+      console.log('Orders data seems incomplete, refreshing...')
+      refreshOrders()
     }
-  }, [isOrdersCached, refreshOrders])
+  }, [isOrdersCached, refreshOrders, orders])
 
   useEffect(() => {
-    let filtered = [...orders]
+    // Debug: Log the orders data
+    console.log('Orders data:', orders)
+    if (orders.length > 0) {
+      console.log('First order structure:', orders[0])
+    }
+    
+    // Filter out orders with missing essential data
+    let filtered = orders.filter(order => order && order._id)
+    filtered = [...filtered]
 
     if (searchQuery) {
       const query = searchQuery.toLowerCase()
       filtered = filtered.filter(
         (order) =>
-          order.orderNumber.toLowerCase().includes(query) ||
-          `${order.customer.firstName} ${order.customer.lastName}`.toLowerCase().includes(query) ||
-          order.customer.email.toLowerCase().includes(query) ||
+          (order.orderNumber || '').toLowerCase().includes(query) ||
+          `${order.customer?.firstName || ''} ${order.customer?.lastName || ''}`.toLowerCase().includes(query) ||
+          (order.customer?.email || '').toLowerCase().includes(query) ||
           (order.razorpayPayment?.paymentId && order.razorpayPayment.paymentId.toLowerCase().includes(query)),
       )
     }
@@ -118,16 +130,16 @@ export default function OrdersPage() {
 
     switch (sortBy) {
       case "date-asc":
-        filtered.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+        filtered.sort((a, b) => new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime())
         break
       case "date-desc":
-        filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        filtered.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime())
         break
       case "amount-asc":
-        filtered.sort((a, b) => a.total - b.total)
+        filtered.sort((a, b) => (a.total || 0) - (b.total || 0))
         break
       case "amount-desc":
-        filtered.sort((a, b) => b.total - a.total)
+        filtered.sort((a, b) => (b.total || 0) - (a.total || 0))
         break
       default:
         break
@@ -138,14 +150,12 @@ export default function OrdersPage() {
 
   const handleUpdateStatus = async (orderId: string, newStatus: string) => {
     try {
-      await api.orders.updateStatus(orderId, newStatus)
+      console.log('Updating order status:', { orderId, newStatus })
+      const updatedOrder = await api.orders.updateStatus(orderId, newStatus)
+      console.log('Status update response:', updatedOrder)
 
-      const updatedOrder = {
-        ...orders.find((o) => o._id === orderId),
-        status: newStatus,
-        updatedAt: new Date().toISOString(),
-      }
-      updateOrderCache(orderId, updatedOrder)
+      // Update the cache with the response from the server
+      updateOrderCache(updatedOrder)
 
       toast({
         title: "Order Status Updated",
@@ -155,7 +165,7 @@ export default function OrdersPage() {
       console.error("Error updating order status:", error)
       toast({
         title: "Error",
-        description: "Failed to update order status. Please try again.",
+        description: `Failed to update order status: ${error instanceof Error ? error.message : 'Unknown error'}`,
         variant: "destructive",
       })
     }
@@ -163,14 +173,8 @@ export default function OrdersPage() {
 
   const handleUpdatePaymentStatus = async (orderId: string, newPaymentStatus: string) => {
     try {
-      await api.orders.updatePaymentStatus(orderId, newPaymentStatus)
-
-      const updatedOrder = {
-        ...orders.find((o) => o._id === orderId),
-        paymentStatus: newPaymentStatus,
-        updatedAt: new Date().toISOString(),
-      }
-      updateOrderCache(orderId, updatedOrder)
+      const updatedOrder = await api.orders.updatePaymentStatus(orderId, newPaymentStatus)
+      updateOrderCache(updatedOrder)
 
       toast({
         title: "Payment Status Updated",
@@ -190,13 +194,16 @@ export default function OrdersPage() {
     try {
       const paymentStatus = await api.payment.getPaymentStatus(orderId)
 
-      const updatedOrder = {
-        ...orders.find((o) => o._id === orderId),
-        paymentStatus: paymentStatus.paymentStatus,
-        razorpayPayment: paymentStatus.razorpayPayment,
-        updatedAt: new Date().toISOString(),
+      const currentOrder = orders.find((o) => o._id === orderId)
+      if (currentOrder) {
+        const updatedOrder = {
+          ...currentOrder,
+          paymentStatus: paymentStatus.paymentStatus,
+          razorpayPayment: paymentStatus.razorpayPayment,
+          updatedAt: new Date().toISOString(),
+        }
+        updateOrderCache(updatedOrder)
       }
-      updateOrderCache(orderId, updatedOrder)
 
       toast({
         title: "Payment Status Refreshed",
@@ -245,7 +252,7 @@ export default function OrdersPage() {
       // Update cache for all successfully updated orders
       if (result?.results) {
         result.results.forEach((updatedOrder: any) => {
-          updateOrderCache(updatedOrder._id, updatedOrder)
+          updateOrderCache(updatedOrder)
         })
       }
 
@@ -277,6 +284,13 @@ export default function OrdersPage() {
           <p className="text-[#4A7C59]">Manage customer orders and payments</p>
         </div>
         <div className="mt-4 md:mt-0 flex gap-2">
+          <Button 
+            variant="outline" 
+            onClick={() => refreshOrders()}
+            className="border-green-200 text-[#2D5016] bg-transparent"
+          >
+            <RefreshCw className="h-4 w-4 mr-2" /> Refresh
+          </Button>
           <Button variant="outline" className="border-green-200 text-[#2D5016] bg-transparent">
             <Calendar className="h-4 w-4 mr-2" /> Filter by Date
           </Button>
@@ -453,7 +467,7 @@ export default function OrdersPage() {
                   </tr>
                 ) : (
                   filteredOrders.map((order) => {
-                    const PaymentIcon = paymentMethodIcons[order.paymentMethod as keyof typeof paymentMethodIcons]
+                    const PaymentIcon = paymentMethodIcons[order.paymentMethod as keyof typeof paymentMethodIcons] || CreditCard
                     return (
                       <motion.tr
                         key={order._id}
@@ -469,33 +483,33 @@ export default function OrdersPage() {
                             className="border-[#4A7C59] data-[state=checked]:bg-[#4A7C59]"
                           />
                         </td>
-                        <td className="px-4 py-3 font-medium text-[#2D5016]">{order.orderNumber}</td>
+                        <td className="px-4 py-3 font-medium text-[#2D5016]">{order.orderNumber || 'N/A'}</td>
                         <td className="px-4 py-3">
                           <div className="font-medium text-[#2D5016]">
-                            {order.customer.firstName} {order.customer.lastName}
+                            {order.customer?.firstName || 'N/A'} {order.customer?.lastName || ''}
                           </div>
-                          <div className="text-sm text-[#4A7C59]">{order.customer.email}</div>
+                          <div className="text-sm text-[#4A7C59]">{order.customer?.email || 'N/A'}</div>
                         </td>
-                        <td className="px-4 py-3 text-[#4A7C59]">{new Date(order.createdAt).toLocaleDateString()}</td>
-                        <td className="px-4 py-3 text-[#4A7C59]">{order.items.length}</td>
-                        <td className="px-4 py-3 font-medium text-[#4A7C59]">₹{order.total.toFixed(2)}</td>
+                        <td className="px-4 py-3 text-[#4A7C59]">{order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'N/A'}</td>
+                        <td className="px-4 py-3 text-[#4A7C59]">{order.items?.length || 0}</td>
+                        <td className="px-4 py-3 font-medium text-[#4A7C59]">₹{(order.total || 0).toFixed(2)}</td>
                         <td className="px-4 py-3">
-                          <Badge className={statusColors[order.status as keyof typeof statusColors]}>
-                            {statusLabels[order.status as keyof typeof statusLabels]}
+                          <Badge className={statusColors[order.status as keyof typeof statusColors] || 'bg-gray-100 text-gray-800'}>
+                            {statusLabels[order.status as keyof typeof statusLabels] || order.status || 'Unknown'}
                           </Badge>
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex flex-col gap-1">
                             <div className="flex items-center gap-2">
-                              <PaymentIcon className="h-4 w-4 text-[#4A7C59]" />
+                              {PaymentIcon && <PaymentIcon className="h-4 w-4 text-[#4A7C59]" />}
                               <Badge
                                 variant="outline"
-                                className={paymentStatusColors[order.paymentStatus as keyof typeof paymentStatusColors]}
+                                className={paymentStatusColors[order.paymentStatus as keyof typeof paymentStatusColors] || 'bg-gray-100 text-gray-800 border-gray-200'}
                               >
-                                {order.paymentStatus}
+                                {order.paymentStatus || 'Unknown'}
                               </Badge>
                             </div>
-                            {order.razorpayPayment?.paymentId && (
+                            {order.razorpayPayment?.paymentId && order.razorpayPayment.paymentId && (
                               <div
                                 className="text-xs text-[#4A7C59] truncate max-w-[120px]"
                                 title={order.razorpayPayment.paymentId}

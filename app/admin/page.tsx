@@ -294,8 +294,8 @@ export default function AdminDashboard() {
             <CardContent>
               {isLoadingOrders ? (
                 <div className="space-y-3">
-                  {[...Array(3)].map((_, i) => (
-                    <div key={i} className="flex items-center space-x-4">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <div key={`loading-${i}`} className="flex items-center space-x-4">
                       <div className="h-4 w-20 bg-emerald-100 rounded animate-pulse"></div>
                       <div className="h-4 w-24 bg-emerald-100 rounded animate-pulse"></div>
                       <div className="h-4 w-16 bg-emerald-100 rounded animate-pulse"></div>
@@ -323,16 +323,16 @@ export default function AdminDashboard() {
                     <tbody>
                       {recentOrders.map((order) => (
                         <tr key={order._id} className="border-b border-emerald-200 last:border-0">
-                          <td className="py-3 text-emerald-800 font-medium text-sm">{order.orderNumber}</td>
+                          <td className="py-3 text-emerald-800 font-medium text-sm">{order.orderNumber || 'N/A'}</td>
                           <td className="py-3 text-emerald-800 hidden sm:table-cell">
                             <div className="truncate max-w-[120px]">
-                              {order.customer.firstName} {order.customer.lastName}
+                              {order.customer?.firstName || 'N/A'} {order.customer?.lastName || ''}
                             </div>
                           </td>
                           <td className="py-3 text-emerald-600 text-sm">
-                            {new Date(order.createdAt).toLocaleDateString()}
+                            {order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'N/A'}
                           </td>
-                          <td className="py-3 text-emerald-800 font-medium">₹{order.total.toFixed(2)}</td>
+                          <td className="py-3 text-emerald-800 font-medium">₹{(order.total || 0).toFixed(2)}</td>
                           <td className="py-3">
                             <span
                               className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
@@ -345,7 +345,7 @@ export default function AdminDashboard() {
                                       : "bg-gray-100 text-gray-800"
                               }`}
                             >
-                              {order.status.replace("_", " ")}
+                              {order.status ? order.status.replace("_", " ") : 'Unknown'}
                             </span>
                           </td>
                           <td className="py-3 hidden md:table-cell">
@@ -358,7 +358,7 @@ export default function AdminDashboard() {
                                     : "bg-red-100 text-red-800"
                               }`}
                             >
-                              {order.paymentStatus}
+                              {order.paymentStatus || 'Unknown'}
                             </span>
                           </td>
                         </tr>
