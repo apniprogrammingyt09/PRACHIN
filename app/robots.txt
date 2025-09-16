@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://prachin-ayurveda.vercel.app/sitemap.xml
+
+# Disallow admin pages
+Disallow: /admin/
+Disallow: /api/
+
+# Allow important pages
+Allow: /
+Allow: /menu
+Allow: /about
+Allow: /contact
+Allow: /cart
+Allow: /checkout
+Allow: /track
+Allow: /product/

@@ -17,6 +17,24 @@ export default function HomePage() {
   const [hoveredGalleryItem, setHoveredGalleryItem] = useState<number | null>(null)
   const [isLoadingProducts, setIsLoadingProducts] = useState(!isProductsCached)
 
+  // Structured data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "Prachin Ayurveda",
+    "description": "Premium Ayurvedic oils, natural shampoos & herbal wellness products",
+    "url": "https://prachin-ayurveda.vercel.app",
+    "telephone": "+91-98765-43210",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "IN"
+    },
+    "openingHours": "Mo-Su 09:00-21:00",
+    "priceRange": "₹₹",
+    "servesCuisine": "Ayurvedic Products",
+    "hasMenu": "https://prachin-ayurveda.vercel.app/menu"
+  }
+
   const featuredProducts = products.filter((product) => product.featured).slice(0, 4)
 
   useEffect(() => {
@@ -34,7 +52,12 @@ export default function HomePage() {
   }, [isProductsCached, refreshProducts])
 
   return (
-    <div className="min-h-screen bg-green-50 pb-20 md:pb-0">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <div className="min-h-screen bg-green-50 pb-20 md:pb-0">
       {/* Hero Section */}
       <section className="relative py-16 md:py-20 overflow-hidden">
         <div className="absolute top-10 left-10 w-20 h-20 bg-green-200/30 rounded-full blur-xl"></div>
@@ -588,5 +611,6 @@ export default function HomePage() {
         </div>
       </section>
     </div>
+    </>
   )
 }
