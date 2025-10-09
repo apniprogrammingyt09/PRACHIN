@@ -6,24 +6,29 @@ import { motion, AnimatePresence } from "framer-motion"
 
 const cakeImages = [
   {
-    src: "https://pngmax.com/_next/image?url=https%3A%2F%2Fpng-max.s3.ap-south-1.amazonaws.com%2Foriginal%2Fd5e8ae69-1b69-45a1-bdaf-7caaa27cd86e.png&w=256&q=75",
-    alt: "Chocolate Drip Cake",
-    title: "Premium Chocolate Cake",
+    src: "/images/faceoil.webp",
+    alt: "Face Oil",
+    title: "Mukh Kanti Face Oil",
   },
   {
-    src: "https://static.vecteezy.com/system/resources/previews/048/040/929/non_2x/a-strawberry-cake-with-cream-and-strawberries-on-top-free-png.png",
-    alt: "Strawberry Cake",
-    title: "Fresh Strawberry Delight",
+    src: "/images/shampoo.webp",
+    alt: "Shampoo",
+    title: "Prachin Ayurvedic Shampoo",
   },
   {
-    src: "https://png.pngtree.com/png-clipart/20241129/original/pngtree-vanilla-cake-png-image_17407914.png",
-    alt: "Vanilla Cake",
-    title: "Classic Vanilla Dream",
+    src: "/images/facepack.webp",
+    alt: "Ubtan Face Pack",
+    title: "Classic Ubtan Face Pack",
   },
   {
-    src: "https://static.vecteezy.com/system/resources/thumbnails/050/575/261/small_2x/red-velvet-cake-with-cream-cheese-frosting-on-white-plate-png.png",
-    alt: "Red Velvet Cake",
-    title: "Rich Red Velvet",
+    src: "/images/painoil.webp",
+    alt: "Pain Oil",
+    title: "Prachin Pain Relief Oil",
+  },
+   {
+    src: "/images/hairoil.webp",
+    alt: "Hair Oil",
+    title: "Prachin Hair Oil",
   },
 ]
 
@@ -117,7 +122,7 @@ export function HeroCarousel() {
               ease: "easeInOut",
               type: "tween",
             }}
-            className="absolute inset-0 flex items-center justify-center p-8"
+            className="absolute inset-0 flex items-center justify-center"
           >
             <motion.div
               className="relative w-full h-full"
@@ -131,7 +136,7 @@ export function HeroCarousel() {
                 src={cakeImages[currentIndex].src || "/placeholder.svg"}
                 alt={cakeImages[currentIndex].alt}
                 fill
-                className="object-contain drop-shadow-2xl"
+                className="object-cover drop-shadow-2xl"
                 priority
               />
 
