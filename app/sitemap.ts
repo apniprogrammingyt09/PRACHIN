@@ -3,46 +3,46 @@ import { MetadataRoute } from 'next'
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: 'https://prachin-ayurveda.vercel.app',
+      url: 'https://prachinayurved.in',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1,
     },
     {
-      url: 'https://prachin-ayurveda.vercel.app/menu',
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.9,
-    },
-    {
-      url: 'https://prachin-ayurveda.vercel.app/about',
+      url: 'https://prachinayurved.in/about',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: 'https://prachin-ayurveda.vercel.app/contact',
+      url: 'https://prachinayurved.in/menu',
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: 'https://prachinayurved.in/contact',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: 'https://prachin-ayurveda.vercel.app/cart',
+      url: 'https://prachinayurved.in/cart',
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: 'always',
       priority: 0.6,
     },
     {
-      url: 'https://prachin-ayurveda.vercel.app/checkout',
+      url: 'https://prachinayurved.in/checkout',
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: 'always',
       priority: 0.5,
     },
     {
-      url: 'https://prachin-ayurveda.vercel.app/track',
+      url: 'https://prachinayurved.in/track',
       lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.5,
-    },
+      changeFrequency: 'daily',
+      priority: 0.6,
+    }
   ]
 }

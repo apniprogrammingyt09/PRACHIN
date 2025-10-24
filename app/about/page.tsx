@@ -1,17 +1,74 @@
-"use client"
-
 import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ChevronRight, Award, Users, Heart, Leaf } from "lucide-react"
 import { useState } from "react"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "About Us - Prachin Ayurved | Authentic Ayurvedic Products Since 2010",
+  description: "Learn about Prachin Ayurved's journey in providing authentic Ayurvedic oils, natural wellness products, and traditional herbal formulations from Taraori, Haryana.",
+  keywords: "Prachin Ayurved about, Ayurvedic company history, natural wellness products, traditional herbal oils, Ayurvedic manufacturer Haryana",
+  openGraph: {
+    title: "About Prachin Ayurved - Authentic Ayurvedic Wellness Since 2010",
+    description: "Discover our commitment to traditional Ayurvedic wisdom and natural wellness solutions.",
+    url: "https://prachinayurved.in/about",
+    siteName: "Prachin Ayurved",
+    images: [{
+      url: "https://prachinayurved.in/logo2.png",
+      width: 1200,
+      height: 630,
+      alt: "Prachin Ayurved - Authentic Ayurvedic Products"
+    }],
+    type: "website"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Prachin Ayurved - Authentic Ayurvedic Wellness",
+    description: "Learn about our journey in providing traditional Ayurvedic products and natural wellness solutions."
+  },
+  alternates: {
+    canonical: "https://prachinayurved.in/about"
+  }
+}
+
+"use client"
 
 export default function AboutPage() {
   const [hoveredImage, setHoveredImage] = useState<number | null>(null)
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Prachin Ayurved",
+      "description": "Authentic Ayurvedic oils and wellness products manufacturer since 2010",
+      "foundingDate": "2010",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Taraori",
+        "addressRegion": "Haryana",
+        "postalCode": "132116",
+        "addressCountry": "IN"
+      },
+      "telephone": "+91-87087-18784",
+      "url": "https://prachinayurved.in",
+      "sameAs": [
+        "https://instagram.com/bharatshastra",
+        "https://instagram.com/prachinayurved108"
+      ]
+    }
+  }
+
   return (
-    <div className="bg-green-50">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <div className="bg-green-50">
       {/* Hero Section */}
       <section className="relative py-16 md:py-24 bg-green-50">
         <div className="container mx-auto px-4">
@@ -197,5 +254,6 @@ export default function AboutPage() {
         </div>
       </section>
     </div>
+    </>
   )
 }

@@ -22,18 +22,26 @@ export default function HomePage() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Store",
-    "name": "Prachin Ayurveda",
-    "description": "Premium Ayurvedic oils, natural shampoos & herbal wellness products",
-    "url": "https://prachin-ayurveda.vercel.app",
-    "telephone": "+91-98765-43210",
+    "name": "Prachin Ayurved",
+    "description": "Authentic Ayurvedic oils, natural wellness products & traditional herbal formulations from Taraori, Haryana",
+    "url": "https://prachinayurved.in",
+    "telephone": ["+91-87087-18784", "+91-72069-07250"],
     "address": {
       "@type": "PostalAddress",
+      "addressLocality": "Taraori",
+      "addressRegion": "Haryana",
+      "postalCode": "132116",
       "addressCountry": "IN"
     },
     "openingHours": "Mo-Su 09:00-21:00",
     "priceRange": "₹₹",
-    "servesCuisine": "Ayurvedic Products",
-    "hasMenu": "https://prachin-ayurveda.vercel.app/menu"
+    "hasMenu": "https://prachinayurved.in/menu",
+    "sameAs": [
+      "https://instagram.com/bharatshastra",
+      "https://instagram.com/prachinayurved108"
+    ],
+    "foundingDate": "2010",
+    "keywords": "Ayurvedic oils, natural wellness, herbal products, face oils, hair oils, pain relief oil, Ayurvedic shampoo"
   }
 
   const featuredProducts = products.filter((product) => product.featured).slice(0, 4)

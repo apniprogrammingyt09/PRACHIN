@@ -1,19 +1,21 @@
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://prachin-ayurveda.vercel.app/sitemap.xml
-
 # Disallow admin pages
 Disallow: /admin/
 Disallow: /api/
 
 # Allow important pages
 Allow: /
-Allow: /menu
 Allow: /about
+Allow: /menu
 Allow: /contact
 Allow: /cart
 Allow: /checkout
 Allow: /track
-Allow: /product/
+
+# Sitemap location
+Sitemap: https://prachinayurved.in/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1
