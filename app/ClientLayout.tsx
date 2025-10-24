@@ -24,12 +24,14 @@ function ConditionalLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFF9F0] flex flex-col">
-      <Navbar />
-      <main className="flex-grow pb-16 md:pb-0">{children}</main>
-      <Footer />
+    <>
+      <div>
+        <Navbar />
+        <main className="flex-grow pb-16 md:pb-0">{children}</main>
+        <Footer />
+      </div>
       <MobileNav />
-    </div>
+    </>
   )
 }
 
