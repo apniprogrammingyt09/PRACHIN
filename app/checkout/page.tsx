@@ -360,7 +360,7 @@ export default function CheckoutPage() {
         tax: totals.tax,
         discount: totals.discount,
         total: totals.total,
-        paymentMethod: paymentMethod as "cod" | "razorpay",
+        paymentMethod: "razorpay",
         notes: formData.notes.trim(),
         coupon: appliedCoupon
           ? {
@@ -599,13 +599,7 @@ export default function CheckoutPage() {
                 <div className="p-6">
                   <h2 className="text-xl font-bold text-[#8B4513] mb-4">Payment Method</h2>
                   <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="space-y-4">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="cod" id="cod" className="text-[#D4915D]" />
-                      <Label htmlFor="cod" className="flex items-center cursor-pointer">
-                        <Landmark className="h-5 w-5 mr-2 text-[#D4915D]" />
-                        <span>Cash on Delivery</span>
-                      </Label>
-                    </div>
+
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="razorpay" id="razorpay" className="text-[#D4915D]" />
                       <Label htmlFor="razorpay" className="flex items-center cursor-pointer">
@@ -635,14 +629,7 @@ export default function CheckoutPage() {
                     </div>
                   )}
 
-                  {paymentMethod === "cod" && (
-                    <div className="mt-6 p-4 bg-[#FFF9F0] rounded-lg">
-                      <p className="text-[#A67C52]">
-                        Please keep the exact amount ready at the time of delivery. Our delivery person will provide you
-                        with a receipt.
-                      </p>
-                    </div>
-                  )}
+
                 </div>
               </div>
 

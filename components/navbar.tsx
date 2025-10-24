@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Search, ShoppingBag, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -53,8 +54,11 @@ export function Navbar() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link href="/" className="text-2xl font-bold text-[#2D5016]">
-              Prachin<span className="text-[#4A7C59]"> Ayurved</span>
+            <Link href="/" className="flex items-center gap-2">
+              <Image src="/logo.png" alt="Prachin Ayurved" width={40} height={40} className="object-contain" />
+              <span className="text-2xl font-bold text-[#2D5016]">
+                Prachin<span className="text-[#4A7C59]"> Ayurved</span>
+              </span>
             </Link>
 
             {/* Navigation Links */}
@@ -186,9 +190,12 @@ export function Navbar() {
                 </SheetHeader>
                 <div className="flex flex-col space-y-6 mt-6">
                   <div className="text-center">
-                    <h2 className="text-2xl font-bold text-[#2D5016] mb-6">
-                      Prachin<span className="text-[#4A7C59]"> Ayurved</span>
-                    </h2>
+                    <div className="flex items-center justify-center gap-2 mb-6">
+                      <Image src="/logo.png" alt="Prachin Ayurved" width={32} height={32} className="object-contain" />
+                      <h2 className="text-2xl font-bold text-[#2D5016]">
+                        Prachin<span className="text-[#4A7C59]"> Ayurved</span>
+                      </h2>
+                    </div>
                   </div>
                   {navLinks.map((link) => (
                     <Link

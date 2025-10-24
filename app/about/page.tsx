@@ -57,10 +57,10 @@ export default function AboutPage() {
               transition={{ duration: 0.8 }}
             >
               {[
-                { src: "/images/mukh-kanti-face-oil.jpg", alt: "Mukh Kanti Face Oil" },
-                { src: "/images/14-herbs-hair-oil.jpg", alt: "14 Herbs Hair Oil" },
-                { src: "/images/pain-relief-oil.jpg", alt: "Pain Relief Oil" },
-                { src: "/images/ayurvedic-shampoo.jpg", alt: "Ayurvedic Shampoo" },
+                { src: "/images/poster3.png", alt: "Mukh Kanti Face Oil" },
+                { src: "/images/poster5.png", alt: "14 Herbs Hair Oil" },
+                { src: "/images/poster1.png", alt: "Pain Relief Oil" },
+                { src: "/images/poster2.png", alt: "Ayurvedic Shampoo" },
               ].map((image, index) => (
                 <div
                   key={index}
@@ -172,106 +172,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Our Team */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <motion.div
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl font-bold text-green-800">Meet Our Experts</h2>
-            <p className="mt-4 text-green-700 max-w-2xl mx-auto">
-              The dedicated Ayurvedic practitioners and wellness experts behind our authentic formulations.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <motion.div
-              className="bg-white rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px]"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-            >
-              <div className="relative h-64 w-full overflow-hidden">
-                <Image
-                  src="/placeholder.svg?height=400&width=400&text=Ayurvedic+Expert"
-                  alt="Ayurvedic Expert"
-                  fill
-                  className="object-cover transition-transform duration-500 hover:scale-110"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-green-800 transition-colors duration-300 hover:text-green-600">
-                  Dr. Priya Sharma
-                </h3>
-                <p className="text-green-600 mb-2">Chief Ayurvedic Practitioner</p>
-                <p className="text-green-700">
-                  With 20 years of experience in traditional Ayurveda, Dr. Priya ensures every formulation follows
-                  authentic principles.
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="bg-white rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px]"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <div className="relative h-64 w-full overflow-hidden">
-                <Image
-                  src="/placeholder.svg?height=400&width=400&text=Herbalist"
-                  alt="Master Herbalist"
-                  fill
-                  className="object-cover transition-transform duration-500 hover:scale-110"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-green-800 transition-colors duration-300 hover:text-green-600">
-                  Vaidya Rahul Patel
-                </h3>
-                <p className="text-green-600 mb-2">Master Herbalist</p>
-                <p className="text-green-700">
-                  A specialist in herb identification and processing, Rahul sources the finest ingredients for our
-                  wellness products.
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="bg-white rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px]"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              viewport={{ once: true }}
-            >
-              <div className="relative h-64 w-full overflow-hidden">
-                <Image
-                  src="/placeholder.svg?height=400&width=400&text=Wellness+Consultant"
-                  alt="Wellness Consultant"
-                  fill
-                  className="object-cover transition-transform duration-500 hover:scale-110"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-green-800 transition-colors duration-300 hover:text-green-600">
-                  Ananya Gupta
-                </h3>
-                <p className="text-green-600 mb-2">Wellness Consultant</p>
-                <p className="text-green-700">
-                  Ananya helps customers find the right Ayurvedic solutions for their unique wellness needs and
-                  lifestyle.
-                </p>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
       {/* Call to Action */}
       <section className="py-16 bg-green-800">

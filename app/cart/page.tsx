@@ -133,7 +133,7 @@ export default function CartPage() {
                 Clear Cart
               </Button>
               <Link href="/menu">
-                <Button variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-white bg-transparent">
+                <Button variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-white hover:text-emerald-600 bg-transparent">
                   Continue Shopping
                 </Button>
               </Link>
@@ -187,7 +187,7 @@ export default function CartPage() {
               <div className="bg-green-50 border border-green-200 rounded p-2 text-xs text-green-600">Credit Card</div>
               <div className="bg-green-50 border border-green-200 rounded p-2 text-xs text-green-600">Debit Card</div>
               <div className="bg-green-50 border border-green-200 rounded p-2 text-xs text-green-600">UPI</div>
-              <div className="bg-green-50 border border-green-200 rounded p-2 text-xs text-green-600">COD</div>
+
             </div>
           </div>
         </motion.div>

@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { ProductCard } from "@/components/product-card"
 import { Badge } from "@/components/ui/badge"
 import { HeroCarousel } from "@/components/hero-carousel"
+import { TestimonialSlider } from "@/components/testimonial-slider"
 import { Star, ChevronRight, Leaf, Droplets, Heart, Truck, Shield, Eye } from "lucide-react"
 import { useData } from "@/contexts/data-context"
 
@@ -336,87 +337,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Special Offers */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <motion.div
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <Badge className="mb-4 bg-green-600 text-white hover:bg-green-700 transition-all duration-300">NEW</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-emerald-800">Special Wellness Offers</h2>
-            <p className="text-lg text-emerald-700">
-              Limited-time deals on our premium Ayurvedic products. Order now before they're gone!
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-            >
-              <Card className="bg-gradient-to-br from-green-50 to-green-100 h-full transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px]">
-                <CardContent className="p-6">
-                  <div className="h-32 bg-white/50 rounded-lg mb-4 flex items-center justify-center transition-all duration-300 hover:bg-white/70">
-                    <Droplets className="h-16 w-16 text-green-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2 text-emerald-800">Buy 2 Get 1 on Face Oils</h3>
-                  <p className="text-emerald-700 mb-4">
-                    Purchase any two face oils and get the third one absolutely free!
-                  </p>
-                  <p className="text-lg font-bold text-green-600">From ₹399</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <Card className="bg-gradient-to-br from-green-50 to-green-100 h-full transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px]">
-                <CardContent className="p-6">
-                  <div className="h-32 bg-white/50 rounded-lg mb-4 flex items-center justify-center transition-all duration-300 hover:bg-white/70">
-                    <Heart className="h-16 w-16 text-green-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2 text-emerald-800">25% Off Wellness Bundles</h3>
-                  <p className="text-emerald-700 mb-4">
-                    Complete your wellness routine with our curated product bundles at a special price!
-                  </p>
-                  <p className="text-lg font-bold text-green-600">From ₹899</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              viewport={{ once: true }}
-            >
-              <Card className="bg-gradient-to-br from-green-50 to-green-100 h-full transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px]">
-                <CardContent className="p-6">
-                  <div className="h-32 bg-white/50 rounded-lg mb-4 flex items-center justify-center transition-all duration-300 hover:bg-white/70">
-                    <Leaf className="h-16 w-16 text-green-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2 text-emerald-800">Hair Care Combo</h3>
-                  <p className="text-emerald-700 mb-4">
-                    Premium hair oil and shampoo combo for complete hair wellness.
-                  </p>
-                  <p className="text-lg font-bold text-green-600">Only ₹649</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
       {/* Food Gallery */}
       <section className="py-16 bg-green-50">
         <div className="container mx-auto px-4">
@@ -436,145 +356,62 @@ export default function HomePage() {
           </motion.div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            {products.map((item, index) => (
+            {/* Poster Images */}
+            {[
+              { id: 'poster1', src: '/images/poster1.webp', title: 'Ayurvedic Hair Care', description: 'Natural hair wellness solutions' },
+              { id: 'poster2', src: '/images/poster2.webp', title: 'Radiant Skin Care', description: 'Pure face oils & treatments' },
+              { id: 'poster3', src: '/images/poster3.webp', title: 'Pain Relief Therapy', description: 'Therapeutic oil blends' },
+              { id: 'poster4', src: '/images/poster4.webp', title: 'Complete Wellness', description: 'Holistic health solutions' },
+              { id: 'poster5', src: '/images/poster5.webp', title: 'Premium Quality', description: 'Traditional herbal formulations' },
+              { id: 'poster', src: '/images/poster.png', title: 'Special Collection', description: 'Exclusive Ayurvedic products' },
+              { id: 'poster1-png', src: '/images/poster1.png', title: 'Hair Care PNG', description: 'High quality hair care solutions' },
+              { id: 'poster2-png', src: '/images/poster2.png', title: 'Skin Care PNG', description: 'Premium skin wellness products' },
+            ].map((poster, index) => (
               <motion.div
-                key={item._id}
+                key={poster.id}
                 className="relative h-64 rounded-lg overflow-hidden shadow-md cursor-pointer"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                onMouseEnter={() => setHoveredGalleryItem(item._id)}
+                onMouseEnter={() => setHoveredGalleryItem(index)}
                 onMouseLeave={() => setHoveredGalleryItem(null)}
               >
                 <div
                   className={`absolute inset-0 bg-gradient-to-t from-emerald-800/90 to-transparent z-10 flex flex-col justify-end p-4 transition-opacity duration-300 ${
-                    hoveredGalleryItem === item._id ? "opacity-100" : "opacity-0"
+                    hoveredGalleryItem === index ? "opacity-100" : "opacity-0"
                   }`}
                 >
-                  <h3 className="text-white font-semibold text-lg">{item.name}</h3>
-                  <p className="text-white/90 font-medium">₹{(item.price || 0).toFixed(2)}</p>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    className="mt-2 bg-white text-emerald-800 hover:bg-green-50 w-full transition-all duration-300 hover:shadow-md border border-transparent hover:border-emerald-800/20 flex items-center justify-center gap-2"
-                  >
-                    <Eye className="h-4 w-4" /> Quick View
-                  </Button>
+                  <h3 className="text-white font-semibold text-lg">{poster.title}</h3>
+                  <p className="text-white/90 text-sm">{poster.description}</p>
+                  <Link href="/menu">
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      className="mt-2 bg-white text-emerald-800 hover:bg-green-50 w-full transition-all duration-300 hover:shadow-md border border-transparent hover:border-emerald-800/20 flex items-center justify-center gap-2"
+                    >
+                      <Eye className="h-4 w-4" /> View Details
+                    </Button>
+                  </Link>
                 </div>
                 <Image
-                  src={item.image || "/placeholder.svg"}
-                  alt={item.name}
+                  src={poster.src}
+                  alt={poster.title}
                   fill
                   className={`object-cover transition-transform duration-500 ${
-                    hoveredGalleryItem === item._id ? "scale-110" : "scale-100"
+                    hoveredGalleryItem === index ? "scale-110" : "scale-100"
                   }`}
                 />
               </motion.div>
             ))}
+
+
           </div>
         </div>
       </section>
 
       {/* Customer Testimonials */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <motion.div
-            className="text-center mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <Badge className="mb-4 bg-green-100 text-emerald-800 hover:bg-green-600 hover:text-white transition-all duration-300">
-              TESTIMONIALS
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="text-emerald-800">What Our</span> <span className="text-green-600">Customers Say</span>
-            </h2>
-            <p className="text-lg text-emerald-700 max-w-2xl mx-auto">
-              Don't just take our word for it. See what our happy customers have to say about our wellness products.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <motion.div
-              className="bg-white p-6 rounded-xl shadow-md border border-gray-100 transition-all duration-300 hover:shadow-xl hover:border-green-600/30 hover:translate-y-[-5px]"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-            >
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden mr-4 transition-all duration-300 hover:shadow-md hover:scale-105">
-                  <Image
-                    src="/placeholder.svg?height=100&width=100&text=PK"
-                    alt="Priya Kumari"
-                    width={48}
-                    height={48}
-                    className="object-cover"
-                  />
-                </div>
-                <h3 className="font-semibold text-emerald-800">Priya Kumari</h3>
-              </div>
-              <p className="text-emerald-700">
-                The Mukh Kanti face oil has transformed my skin! It's so natural and effective. I can see the glow and
-                my skin feels so much healthier. Highly recommend!
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="bg-white p-6 rounded-xl shadow-md border border-gray-100 transition-all duration-300 hover:shadow-xl hover:border-green-600/30 hover:translate-y-[-5px]"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden mr-4 transition-all duration-300 hover:shadow-md hover:scale-105">
-                  <Image
-                    src="/placeholder.svg?height=100&width=100&text=RS"
-                    alt="Rajesh Sharma"
-                    width={48}
-                    height={48}
-                    className="object-cover"
-                  />
-                </div>
-                <h3 className="font-semibold text-emerald-800">Rajesh Sharma</h3>
-              </div>
-              <p className="text-emerald-700">
-                The pain relief oil works wonders! My joint pain has reduced significantly after using it regularly.
-                Fast delivery and authentic products.
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="bg-white p-6 rounded-xl shadow-md border border-gray-100 transition-all duration-300 hover:shadow-xl hover:border-green-600/30 hover:translate-y-[-5px]"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              viewport={{ once: true }}
-            >
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden mr-4 transition-all duration-300 hover:shadow-md hover:scale-105">
-                  <Image
-                    src="/placeholder.svg?height=100&width=100&text=AM"
-                    alt="Anita Mehta"
-                    width={48}
-                    height={48}
-                    className="object-cover"
-                  />
-                </div>
-                <h3 className="font-semibold text-emerald-800">Anita Mehta</h3>
-              </div>
-              <p className="text-emerald-700">
-                I've been using their hair oil and shampoo for months now. My hair fall has reduced and my hair feels
-                stronger and shinier. Pure Ayurvedic goodness!
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+      <TestimonialSlider />
 
       {/* CTA Section */}
       <section className="py-16 bg-emerald-800">

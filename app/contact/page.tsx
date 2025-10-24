@@ -203,8 +203,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <h3 className="font-medium text-green-800">Address</h3>
-                        <p className="text-green-700">123 Wellness Street, Ayurveda Lane</p>
-                        <p className="text-green-700">Mumbai, Maharashtra 400001</p>
+                        <p className="text-green-700">Taraori, Haryana-132116</p>
                       </div>
                     </div>
 
@@ -214,8 +213,8 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <h3 className="font-medium text-green-800">Phone</h3>
-                        <p className="text-green-700">+91 98765 43210</p>
-                        <p className="text-green-700">+91 12345 67890</p>
+                        <p className="text-green-700">87087-18784</p>
+                        <p className="text-green-700">72069-07250</p>
                       </div>
                     </div>
 
@@ -225,8 +224,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <h3 className="font-medium text-green-800">Email</h3>
-                        <p className="text-green-700">info@prachinayurved.com</p>
-                        <p className="text-green-700">wellness@prachinayurved.com</p>
+                        <p className="text-green-700">prachinayurvedindia@gmail.com</p>
                       </div>
                     </div>
 
@@ -248,7 +246,7 @@ export default function ContactPage() {
                 <div className="p-8">
                   <h2 className="text-2xl font-bold text-green-800 mb-2">Quick Chat</h2>
                   <p className="text-green-700 mb-4">Get wellness guidance on WhatsApp</p>
-                  <Link href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer">
+                  <Link href="https://wa.me/917206907250" target="_blank" rel="noopener noreferrer">
                     <Button className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white">
                       <MessageCircle className="mr-2 h-5 w-5" /> Chat on WhatsApp
                     </Button>
