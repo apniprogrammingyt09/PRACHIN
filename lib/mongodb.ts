@@ -6,16 +6,7 @@ if (!uri) {
   throw new Error('MONGODB_URI environment variable is not defined')
 }
 
-const options = {
-  maxPoolSize: 10,
-  serverSelectionTimeoutMS: 5000,
-  socketTimeoutMS: 45000,
-  bufferMaxEntries: 0,
-  retryWrites: true,
-  ssl: true,
-  tlsAllowInvalidCertificates: false,
-  tlsAllowInvalidHostnames: false
-}
+const options = {}
 
 let client: MongoClient
 let clientPromise: Promise<MongoClient>
