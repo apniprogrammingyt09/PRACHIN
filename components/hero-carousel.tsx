@@ -83,19 +83,19 @@ export function HeroCarousel() {
     <div className="relative w-80 h-80 md:w-96 md:h-96 mx-auto">
       {/* Animated background rings */}
       <motion.div
-        className="absolute inset-0 rounded-full border-2 border-[#D4915D]/20"
+        className="absolute inset-0 rounded-full border-2 border-emerald-400/20"
         animate={{ rotate: 360 }}
         transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
       />
       <motion.div
-        className="absolute inset-4 rounded-full border border-[#8B4513]/15"
+        className="absolute inset-4 rounded-full border border-green-600/15"
         animate={{ rotate: -360 }}
         transition={{ duration: 15, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
       />
 
       {/* Pulsing background gradient */}
       <motion.div
-        className="absolute inset-0 rounded-full bg-gradient-to-br from-[#D4915D]/20 to-[#8B4513]/20 blur-xl"
+        className="absolute inset-0 rounded-full bg-gradient-to-br from-emerald-400/20 to-green-600/20 blur-xl"
         animate={{
           scale: [1, 1.1, 1],
           opacity: [0.3, 0.5, 0.3],
@@ -108,7 +108,7 @@ export function HeroCarousel() {
       />
 
       {/* Main carousel container */}
-      <div className="relative w-full h-full rounded-full overflow-hidden bg-gradient-to-br from-[#FFF9F0] to-[#FEEBD7] shadow-2xl">
+      <div className="relative w-full h-full rounded-full overflow-hidden bg-gradient-to-br from-green-50 to-emerald-100 shadow-2xl">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={currentIndex}
@@ -185,7 +185,7 @@ export function HeroCarousel() {
 
         {/* Floating decorative elements */}
         <motion.div
-          className="absolute top-4 right-4 w-3 h-3 bg-[#D4915D] rounded-full opacity-60"
+          className="absolute top-4 right-4 w-3 h-3 bg-emerald-500 rounded-full opacity-60"
           animate={{
             y: [0, -15, 0],
             scale: [1, 1.3, 1],
@@ -198,7 +198,7 @@ export function HeroCarousel() {
           }}
         />
         <motion.div
-          className="absolute bottom-6 left-6 w-2 h-2 bg-[#8B4513] rounded-full opacity-40"
+          className="absolute bottom-6 left-6 w-2 h-2 bg-green-700 rounded-full opacity-40"
           animate={{
             y: [0, -12, 0],
             scale: [1, 1.4, 1],
@@ -212,7 +212,7 @@ export function HeroCarousel() {
           }}
         />
         <motion.div
-          className="absolute top-1/3 left-4 w-1.5 h-1.5 bg-[#D4915D] rounded-full opacity-50"
+          className="absolute top-1/3 left-4 w-1.5 h-1.5 bg-emerald-500 rounded-full opacity-50"
           animate={{
             y: [0, -8, 0],
             x: [0, 8, 0],
@@ -234,14 +234,14 @@ export function HeroCarousel() {
             key={index}
             onClick={() => handleDotClick(index)}
             className={`relative overflow-hidden rounded-full transition-all duration-500 ${
-              index === currentIndex ? "bg-[#8B4513] w-8 h-3" : "bg-[#D4915D]/40 hover:bg-[#D4915D]/60 w-3 h-3"
+              index === currentIndex ? "bg-green-700 w-8 h-3" : "bg-emerald-400/40 hover:bg-emerald-400/60 w-3 h-3"
             }`}
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}
           >
             {index === currentIndex && (
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-[#D4915D] to-[#8B4513]"
+                className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-700"
                 initial={{ x: "-100%" }}
                 animate={{ x: "0%" }}
                 transition={{ duration: 5, ease: "linear" }}
@@ -267,10 +267,10 @@ export function HeroCarousel() {
           className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 text-center"
         >
           <motion.p
-            className="text-sm font-medium text-[#8B4513] bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg border border-[#D4915D]/20"
+            className="text-sm font-medium text-green-800 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg border border-emerald-400/20"
             whileHover={{
               scale: 1.05,
-              boxShadow: "0 10px 25px rgba(139, 69, 19, 0.2)",
+              boxShadow: "0 10px 25px rgba(34, 197, 94, 0.2)",
             }}
           >
             {cakeImages[currentIndex].title}
@@ -280,13 +280,13 @@ export function HeroCarousel() {
 
       {/* Progress ring */}
       <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="48" fill="none" stroke="#D4915D" strokeWidth="0.5" opacity="0.3" />
+        <circle cx="50" cy="50" r="48" fill="none" stroke="#10b981" strokeWidth="0.5" opacity="0.3" />
         <motion.circle
           cx="50"
           cy="50"
           r="48"
           fill="none"
-          stroke="#8B4513"
+          stroke="#15803d"
           strokeWidth="1"
           strokeLinecap="round"
           strokeDasharray="301.59"
