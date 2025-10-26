@@ -77,7 +77,7 @@ export async function sendContactFormEmail(formData: {
             <ul style="margin: 0; padding-left: 20px;">
               <li>Our wellness experts will review your inquiry</li>
               <li>We'll respond within 24 hours during business days</li>
-              <li>For urgent matters, call us at+91-7206907250</li>
+              <li>For urgent matters, call us at +91-87087-18784 or +91-72069-07250</li>
               <li>You can also visit our website for immediate assistance</li>
             </ul>
           </div>
@@ -96,8 +96,8 @@ export async function sendContactFormEmail(formData: {
         </div>
         
         <div style="background: #2D5016; color: white; padding: 20px; text-align: center; border-radius: 0 0 10px 10px;">
-          <p style="margin: 0; font-size: 14px;">📧prachinayurvedindia@gmail.com| 📞+91-7206907250</p>
-          <p style="margin: 5px 0 0 0; font-size: 14px;">🌐www.prachinayurved.in</p>
+          <p style="margin: 0; font-size: 14px;">📧 prachinayurvedindia@gmail.com | 📞 +91-87087-18784, +91-72069-07250</p>
+          <p style="margin: 5px 0 0 0; font-size: 14px;">🌐 www.prachinayurved.in</p>
         </div>
       </body>
       </html>
@@ -232,8 +232,8 @@ export async function sendOrderConfirmationEmail(order: Order) {
         </div>
         
         <div style="background: #2D5016; color: white; padding: 20px; text-align: center; border-radius: 0 0 10px 10px;">
-          <p style="margin: 0; font-size: 14px;">📧prachinayurvedindia@gmail.com| 📞+91-7206907250</p>
-          <p style="margin: 5px 0 0 0; font-size: 14px;">🌐www.prachinayurved.in</p>
+          <p style="margin: 0; font-size: 14px;">📧 prachinayurvedindia@gmail.com | 📞 +91-87087-18784, +91-72069-07250</p>
+          <p style="margin: 5px 0 0 0; font-size: 14px;">🌐 www.prachinayurved.in</p>
           <p style="margin: 10px 0 0 0; font-size: 12px; opacity: 0.8;">Follow us for wellness tips and Ayurvedic knowledge</p>
         </div>
       </body>

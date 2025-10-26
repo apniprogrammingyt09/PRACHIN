@@ -52,8 +52,8 @@ export class OrderService {
     const order: Omit<Order, "_id"> = {
       ...data,
       orderNumber: this.generateOrderNumber(),
-      paymentStatus: data.paymentMethod === "cod" ? "pending" : data.paymentMethod === "razorpay" ? "pending" : "paid",
-      status: "pending",
+      paymentStatus: data.razorpayPayment ? "paid" : data.paymentMethod === "cod" ? "pending" : "paid",
+      status: data.razorpayPayment ? "confirmed" : "pending",
       createdAt: new Date(),
       updatedAt: new Date(),
     }

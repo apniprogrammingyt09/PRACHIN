@@ -491,7 +491,26 @@ export default function OrdersPage() {
                           <div className="text-sm text-[#4A7C59]">{order.customer?.email || 'N/A'}</div>
                         </td>
                         <td className="px-4 py-3 text-[#4A7C59]">{order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'N/A'}</td>
-                        <td className="px-4 py-3 text-[#4A7C59]">{order.items?.length || 0}</td>
+                        <td className="px-4 py-3 text-[#4A7C59]">
+                          <div className="max-w-[200px]">
+                            {order.items && order.items.length > 0 ? (
+                              <div className="text-sm">
+                                {order.items.slice(0, 2).map((item: any, index: number) => (
+                                  <div key={index} className="truncate">
+                                    {item.name} x{item.quantity}
+                                  </div>
+                                ))}
+                                {order.items.length > 2 && (
+                                  <div className="text-xs text-gray-500">
+                                    +{order.items.length - 2} more
+                                  </div>
+                                )}
+                              </div>
+                            ) : (
+                              'No items'
+                            )}
+                          </div>
+                        </td>
                         <td className="px-4 py-3 font-medium text-[#4A7C59]">₹{(order.total || 0).toFixed(2)}</td>
                         <td className="px-4 py-3">
                           <Badge className={statusColors[order.status as keyof typeof statusColors] || 'bg-gray-100 text-gray-800'}>

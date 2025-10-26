@@ -9,7 +9,7 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-8">
           <div className="text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
-              <Image src="/logo2.png" alt="Prachin Ayurved" width={32} height={32} className="object-contain" />
+              <Image src="/logo2.png" alt="Prachin Ayurved" width={32} height={32} className="object-contain" style={{width: 'auto', height: '32px'}} />
               <div className="text-2xl font-bold">
                 Prachin<span className="text-emerald-600"> Ayurved</span>
               </div>

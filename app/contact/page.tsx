@@ -246,7 +246,7 @@ export default function ContactPage() {
                 <div className="p-8">
                   <h2 className="text-2xl font-bold text-green-800 mb-2">Quick Chat</h2>
                   <p className="text-green-700 mb-4">Get wellness guidance on WhatsApp</p>
-                  <Link href="https://wa.me/917206907250" target="_blank" rel="noopener noreferrer">
+                  <Link href="https://wa.me/918708718784" target="_blank" rel="noopener noreferrer">
                     <Button className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white">
                       <MessageCircle className="mr-2 h-5 w-5" /> Chat on WhatsApp
                     </Button>

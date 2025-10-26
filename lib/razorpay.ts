@@ -2,8 +2,8 @@ import Razorpay from "razorpay"
 
 // Initialize Razorpay instance with credentials (server-side only)
 export const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID || "rzp_test_uC5GRwRYijH00y",
-  key_secret: process.env.RAZORPAY_KEY_SECRET || "3ydxvr4dy3XmPup697lXVb1j",
+  key_id: process.env.RAZORPAY_KEY_ID || "rzp_live_RY0EXcXh55Yjmo",
+  key_secret: process.env.RAZORPAY_KEY_SECRET || "jyTAK2Qsmnb7oJDbvOKA6Tvy",
 })
 
 // Utility function to create Razorpay order
@@ -32,7 +32,7 @@ export const verifyPaymentSignature = (
     const crypto = require("crypto")
     const body = razorpayOrderId + "|" + razorpayPaymentId
     const expectedSignature = crypto
-      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET || "3ydxvr4dy3XmPup697lXVb1j")
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET || "jyTAK2Qsmnb7oJDbvOKA6Tvy")
       .update(body.toString())
       .digest("hex")
 

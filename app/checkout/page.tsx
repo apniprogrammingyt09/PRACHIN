@@ -173,12 +173,10 @@ export default function CheckoutPage() {
 
   const calculateTotals = () => {
     const subtotal = totalPrice
-    // Free delivery for orders above ₹500, otherwise ₹50 for Ayurvedic products
-    const deliveryFee = subtotal >= 500 ? 0 : 50
-    // GST for cosmetics/personal care products is 18%
-    const tax = subtotal * 0.18
+    const deliveryFee = 0
+    const tax = 0
     const discount = appliedCoupon ? appliedCoupon.discountAmount : 0
-    const total = subtotal + deliveryFee + tax - discount
+    const total = subtotal - discount
 
     return {
       subtotal,
@@ -200,15 +198,6 @@ export default function CheckoutPage() {
       // Create Razorpay order
       const razorpayOrder = await api.payment.createOrder(totals.total, `order_${Date.now()}`)
 
-      // Create order in database first with pending payment
-      const order = await api.orders.create({
-        ...orderData,
-        paymentMethod: "razorpay",
-        razorpayPayment: {
-          orderId: razorpayOrder.id,
-        },
-      })
-
       const options = {
         key: razorpayConfig.key,
         amount: razorpayOrder.amount,
@@ -218,49 +207,38 @@ export default function CheckoutPage() {
         order_id: razorpayOrder.id,
         handler: async (response: any) => {
           try {
-            // Verify payment
-            const verificationResult = await api.payment.verifyPayment({
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              order_id: order._id,
+            // Create order only after successful payment
+            const order = await api.orders.create({
+              ...orderData,
+              paymentMethod: "razorpay",
+              razorpayPayment: {
+                orderId: response.razorpay_order_id,
+                paymentId: response.razorpay_payment_id,
+                signature: response.razorpay_signature,
+                status: "captured",
+              },
             })
-
-            if (verificationResult.success) {
-              // Mark coupon as used if applicable
-              if (appliedCoupon) {
-                try {
-                  await fetch(`/api/coupons/${appliedCoupon.id}/use`, {
-                    method: "POST",
-                  })
-                } catch (error) {
-                  console.error("Error marking coupon as used:", error)
-                }
-              }
-
-              toast({
-                title: "Payment Successful!",
-                description: `Your order ${order.orderNumber} has been placed successfully.`,
-                variant: "default",
-              })
-
-              clearCart()
-
-              // Navigate to success page
-              const params = new URLSearchParams({
-                orderNumber: order.orderNumber,
-                orderId: order._id || order.id || "",
-              })
-
-              router.push(`/order-success?${params.toString()}`)
-            } else {
-              throw new Error("Payment verification failed")
+            
+            // Mark coupon as used if applicable
+            if (appliedCoupon) {
+              fetch(`/api/coupons/${appliedCoupon.id}/use`, {
+                method: "POST",
+              }).catch(error => console.error("Error marking coupon as used:", error))
             }
+            
+            clearCart()
+            
+            const params = new URLSearchParams({
+              orderNumber: order.orderNumber,
+              orderId: order._id || order.id || "",
+            })
+            
+            router.push(`/order-success?${params.toString()}`)
           } catch (error) {
-            console.error("Payment verification error:", error)
+            console.error("Error creating order after payment:", error)
             toast({
-              title: "Payment Verification Failed",
-              description: "There was an issue verifying your payment. Please contact support.",
+              title: "Order Creation Failed",
+              description: "Payment successful but order creation failed. Please contact support.",
               variant: "destructive",
             })
           }
@@ -751,21 +729,7 @@ export default function CheckoutPage() {
                     <span className="text-[#A67C52]">Subtotal ({totalItems} items)</span>
                     <span className="text-[#8B4513]">₹{totals.subtotal.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-[#A67C52]">Delivery Fee</span>
-                    <span className={totals.deliveryFee === 0 ? "text-green-600" : "text-[#8B4513]"}>
-                      {totals.deliveryFee === 0 ? "FREE" : `₹${totals.deliveryFee.toFixed(2)}`}
-                    </span>
-                  </div>
-                  {totals.deliveryFee === 0 && totals.subtotal >= 500 && (
-                    <div className="text-xs text-green-600 text-right -mt-1">
-                      Free delivery on orders ₹500+
-                    </div>
-                  )}
-                  <div className="flex justify-between">
-                    <span className="text-[#A67C52]">Tax</span>
-                    <span className="text-[#8B4513]">₹{totals.tax.toFixed(2)}</span>
-                  </div>
+
                   {totals.discount > 0 && (
                     <div className="flex justify-between">
                       <span className="text-green-600">Discount</span>

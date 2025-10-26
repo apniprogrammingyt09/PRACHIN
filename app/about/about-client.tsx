@@ -25,7 +25,7 @@ export default function AboutClient() {
         "postalCode": "132116",
         "addressCountry": "IN"
       },
-      "telephone": "+91-87087-18784",
+      "telephone": ["+91-87087-18784", "+91-72069-07250"],
       "url": "https://prachinayurved.in",
       "sameAs": [
         "https://instagram.com/bharatshastra",
