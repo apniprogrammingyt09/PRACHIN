@@ -1,7 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { couponService } from "@/lib/services/couponService"
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const params = await context.params
   try {
     const coupon = await couponService.getCouponById(params.id)
 
@@ -16,7 +17,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const params = await context.params
   try {
     const body = await request.json()
 
@@ -37,7 +39,8 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const params = await context.params
   try {
     const success = await couponService.deleteCoupon(params.id)
 
