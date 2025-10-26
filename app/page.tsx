@@ -345,72 +345,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Product Gallery */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <motion.div
-            className="text-center mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="text-emerald-800">Product</span> <span className="text-green-600">Gallery</span>
-            </h2>
-            <p className="text-lg text-emerald-700 max-w-2xl mx-auto">
-              Explore our premium Ayurvedic products crafted with ancient wisdom and modern care.
-            </p>
 
-          </motion.div>
-
-          <div className="relative overflow-hidden">
-            <div className="flex gap-6 animate-scroll">
-              {[
-                '/images/poster1.webp',
-                '/images/poster2.webp',
-                '/images/poster3.webp',
-                '/images/poster4.webp',
-                '/images/poster5.webp',
-                '/images/poster.png',
-                '/images/poster1.png',
-                '/images/poster2.png',
-                '/images/poster1.webp',
-                '/images/poster2.webp',
-                '/images/poster3.webp',
-                '/images/poster4.webp'
-              ].map((src, index) => (
-                <div key={index} className="flex-shrink-0 rounded-lg overflow-hidden shadow-md">
-                  <Image
-                    src={src}
-                    alt={`Ayurvedic Product ${(index % 8) + 1}`}
-                    width={300}
-                    height={400}
-                    className="w-auto h-80"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <style jsx>{`
-            @keyframes scroll {
-              0% {
-                transform: translateX(0);
-              }
-              100% {
-                transform: translateX(-50%);
-              }
-            }
-            .animate-scroll {
-              animation: scroll 30s linear infinite;
-            }
-            .animate-scroll:hover {
-              animation-play-state: paused;
-            }
-          `}</style>
-        </div>
-      </section>
 
       {/* Customer Testimonials */}
       <TestimonialSlider />

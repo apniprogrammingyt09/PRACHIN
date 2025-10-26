@@ -79,7 +79,7 @@ export function ProductCard({
               src={imageUrl || "/placeholder.svg"}
               alt={title}
               fill
-              className="object-cover w-full h-full"
+              className="object-contain w-full h-full bg-gray-50"
               unoptimized={image ? true : false}
             />
           </Link>
