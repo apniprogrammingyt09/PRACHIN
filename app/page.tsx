@@ -15,7 +15,7 @@ import { useData } from "@/contexts/data-context"
 
 export default function HomePage() {
   const { products, isProductsCached, refreshProducts } = useData()
-  const [hoveredGalleryItem, setHoveredGalleryItem] = useState<number | null>(null)
+
   const [isLoadingProducts, setIsLoadingProducts] = useState(!isProductsCached)
 
   // Structured data for SEO
@@ -345,8 +345,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Food Gallery */}
-      <section className="py-16 bg-green-50">
+      {/* Product Gallery */}
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <motion.div
             className="text-center mb-8"
@@ -361,60 +361,54 @@ export default function HomePage() {
             <p className="text-lg text-emerald-700 max-w-2xl mx-auto">
               Explore our premium Ayurvedic products crafted with ancient wisdom and modern care.
             </p>
+
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            {/* Poster Images */}
-            {[
-              { id: 'poster1', src: '/images/poster1.webp', title: 'Ayurvedic Hair Care', description: 'Natural hair wellness solutions' },
-              { id: 'poster2', src: '/images/poster2.webp', title: 'Radiant Skin Care', description: 'Pure face oils & treatments' },
-              { id: 'poster3', src: '/images/poster3.webp', title: 'Pain Relief Therapy', description: 'Therapeutic oil blends' },
-              { id: 'poster4', src: '/images/poster4.webp', title: 'Complete Wellness', description: 'Holistic health solutions' },
-              { id: 'poster5', src: '/images/poster5.webp', title: 'Premium Quality', description: 'Traditional herbal formulations' },
-              { id: 'poster', src: '/images/poster.png', title: 'Special Collection', description: 'Exclusive Ayurvedic products' },
-              { id: 'poster1-png', src: '/images/poster1.png', title: 'Hair Care PNG', description: 'High quality hair care solutions' },
-              { id: 'poster2-png', src: '/images/poster2.png', title: 'Skin Care PNG', description: 'Premium skin wellness products' },
-            ].map((poster, index) => (
-              <motion.div
-                key={poster.id}
-                className="relative h-64 rounded-lg overflow-hidden shadow-md cursor-pointer"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                onMouseEnter={() => setHoveredGalleryItem(index)}
-                onMouseLeave={() => setHoveredGalleryItem(null)}
-              >
-                <div
-                  className={`absolute inset-0 bg-gradient-to-t from-emerald-800/90 to-transparent z-10 flex flex-col justify-end p-4 transition-opacity duration-300 ${
-                    hoveredGalleryItem === index ? "opacity-100" : "opacity-0"
-                  }`}
-                >
-                  <h3 className="text-white font-semibold text-lg">{poster.title}</h3>
-                  <p className="text-white/90 text-sm">{poster.description}</p>
-                  <Link href="/menu">
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      className="mt-2 bg-white text-emerald-800 hover:bg-green-50 w-full transition-all duration-300 hover:shadow-md border border-transparent hover:border-emerald-800/20 flex items-center justify-center gap-2"
-                    >
-                      <Eye className="h-4 w-4" /> View Details
-                    </Button>
-                  </Link>
+          <div className="relative overflow-hidden">
+            <div className="flex gap-6 animate-scroll">
+              {[
+                '/images/poster1.webp',
+                '/images/poster2.webp',
+                '/images/poster3.webp',
+                '/images/poster4.webp',
+                '/images/poster5.webp',
+                '/images/poster.png',
+                '/images/poster1.png',
+                '/images/poster2.png',
+                '/images/poster1.webp',
+                '/images/poster2.webp',
+                '/images/poster3.webp',
+                '/images/poster4.webp'
+              ].map((src, index) => (
+                <div key={index} className="flex-shrink-0 rounded-lg overflow-hidden shadow-md">
+                  <Image
+                    src={src}
+                    alt={`Ayurvedic Product ${(index % 8) + 1}`}
+                    width={300}
+                    height={400}
+                    className="w-auto h-80"
+                  />
                 </div>
-                <Image
-                  src={poster.src}
-                  alt={poster.title}
-                  fill
-                  className={`object-cover transition-transform duration-500 ${
-                    hoveredGalleryItem === index ? "scale-110" : "scale-100"
-                  }`}
-                />
-              </motion.div>
-            ))}
-
-
+              ))}
+            </div>
           </div>
+
+          <style jsx>{`
+            @keyframes scroll {
+              0% {
+                transform: translateX(0);
+              }
+              100% {
+                transform: translateX(-50%);
+              }
+            }
+            .animate-scroll {
+              animation: scroll 30s linear infinite;
+            }
+            .animate-scroll:hover {
+              animation-play-state: paused;
+            }
+          `}</style>
         </div>
       </section>
 

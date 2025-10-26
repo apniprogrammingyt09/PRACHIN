@@ -86,24 +86,24 @@ export default function MenuPage() {
 
     if (skinTypeFilters.oily) {
       filtered = filtered.filter(
-        (product) => product.skinTypes && product.skinTypes.some((type: string) => type.toLowerCase().includes("oily")),
+        (product) => product.skinType && product.skinType.some((type: string) => type.toLowerCase().includes("oily")),
       )
     }
     if (skinTypeFilters.dry) {
       filtered = filtered.filter(
-        (product) => product.skinTypes && product.skinTypes.some((type: string) => type.toLowerCase().includes("dry")),
+        (product) => product.skinType && product.skinType.some((type: string) => type.toLowerCase().includes("dry")),
       )
     }
     if (skinTypeFilters.sensitive) {
       filtered = filtered.filter(
         (product) =>
-          product.skinTypes && product.skinTypes.some((type: string) => type.toLowerCase().includes("sensitive")),
+          product.skinType && product.skinType.some((type: string) => type.toLowerCase().includes("sensitive")),
       )
     }
     if (skinTypeFilters.combination) {
       filtered = filtered.filter(
         (product) =>
-          product.skinTypes && product.skinTypes.some((type: string) => type.toLowerCase().includes("combination")),
+          product.skinType && product.skinType.some((type: string) => type.toLowerCase().includes("combination")),
       )
     }
 

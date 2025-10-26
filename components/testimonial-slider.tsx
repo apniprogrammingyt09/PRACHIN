@@ -161,15 +161,6 @@ export function TestimonialSlider() {
               ))}
             </div>
 
-            {/* Auto-play indicator */}
-            <div className="flex justify-center items-center mt-4">
-              <div className="flex items-center space-x-2 text-sm text-emerald-600">
-                <div className={`w-2 h-2 rounded-full ${isAutoPlaying ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`} />
-                <span className="text-emerald-700 text-xs">
-                  {isAutoPlaying ? 'Auto-playing testimonials' : 'Manual mode'}
-                </span>
-              </div>
-            </div>
           </div>
 
           {/* Statistics */}
