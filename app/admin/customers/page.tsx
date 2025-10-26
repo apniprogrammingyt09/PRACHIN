@@ -111,7 +111,29 @@ export default function CustomersPage() {
           <p className="text-[#4A7C59]">Manage your customer database</p>
         </div>
         <div className="mt-4 md:mt-0 flex gap-2">
-          <Button variant="outline" className="border-green-200 text-[#2D5016] bg-transparent">
+          <Button 
+            variant="outline" 
+            className="border-green-200 text-[#2D5016] bg-transparent"
+            onClick={() => {
+              const csvData = filteredCustomers.map(c => ({
+                Name: `${c.firstName} ${c.lastName}`,
+                Email: c.email,
+                Phone: c.phone || '',
+                Orders: c.totalOrders,
+                'Total Spent': c.totalSpent,
+                Status: c.status,
+                'Join Date': new Date(c.createdAt).toLocaleDateString()
+              }))
+              const csv = [Object.keys(csvData[0]).join(','), ...csvData.map(row => Object.values(row).join(','))].join('\n')
+              const blob = new Blob([csv], { type: 'text/csv' })
+              const url = URL.createObjectURL(blob)
+              const a = document.createElement('a')
+              a.href = url
+              a.download = `customers-${new Date().toISOString().split('T')[0]}.csv`
+              a.click()
+              URL.revokeObjectURL(url)
+            }}
+          >
             <Download className="h-4 w-4 mr-2" /> Export
           </Button>
           <Button className="bg-[#4A7C59] hover:bg-[#2D5016] text-white">

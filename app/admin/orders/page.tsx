@@ -294,7 +294,28 @@ export default function OrdersPage() {
           <Button variant="outline" className="border-green-200 text-[#2D5016] bg-transparent">
             <Calendar className="h-4 w-4 mr-2" /> Filter by Date
           </Button>
-          <Button className="bg-[#4A7C59] hover:bg-[#2D5016] text-white">
+          <Button 
+            className="bg-[#4A7C59] hover:bg-[#2D5016] text-white"
+            onClick={() => {
+              const csvData = filteredOrders.map(o => ({
+                'Order ID': o.orderNumber || 'N/A',
+                Customer: `${o.customer?.firstName || 'N/A'} ${o.customer?.lastName || ''}`,
+                Date: o.createdAt ? new Date(o.createdAt).toLocaleDateString() : 'N/A',
+                Items: o.items?.length || 0,
+                Amount: (o.total || 0).toFixed(2),
+                Status: o.status || 'Unknown',
+                Payment: o.paymentStatus || 'Unknown'
+              }))
+              const csv = [Object.keys(csvData[0]).join(','), ...csvData.map(row => Object.values(row).join(','))].join('\n')
+              const blob = new Blob([csv], { type: 'text/csv' })
+              const url = URL.createObjectURL(blob)
+              const a = document.createElement('a')
+              a.href = url
+              a.download = `orders-${new Date().toISOString().split('T')[0]}.csv`
+              a.click()
+              URL.revokeObjectURL(url)
+            }}
+          >
             <FileText className="h-4 w-4 mr-2" /> Export Orders
           </Button>
         </div>
