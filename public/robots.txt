@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Disallow admin pages
+Disallow: /admin/
+Disallow: /api/
+
+# Allow important pages
+Allow: /
+Allow: /menu
+Allow: /about
+Allow: /contact
+Allow: /shipping
+Allow: /privacy
+Allow: /terms
+Allow: /refund
+
+# Sitemap
+Sitemap: https://prachinayurved.in/sitemap.xml

@@ -1,0 +1,26 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+Developer: Krish Bhagat
+Contact: https://www.linkedin.com/in/krish-bhagat-47512a289
+From: India
+
+Agency: Nexory Studios
+Site: https://www.nexorystudios.com
+Location: India
+
+# THANKS
+
+Client: Prachin Ayurved
+Location: Taraori, Haryana, India
+
+# TECHNOLOGY COLOPHON
+
+Standards: HTML5, CSS3, JavaScript
+Components: React, Next.js, TypeScript
+Tools: Tailwind CSS, Framer Motion
+Backend: MongoDB, Node.js
+Payment: Razorpay
+Hosting: Vercel

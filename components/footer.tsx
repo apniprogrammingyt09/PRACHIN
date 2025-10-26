@@ -74,6 +74,10 @@ export function Footer() {
 
         <div className="border-t border-emerald-200 mt-8 pt-6 text-center text-gray-600 text-sm">
           <p>&copy; {new Date().getFullYear()} Prachin Ayurved. All rights reserved.</p>
+          <p className="mt-2">
+            Website by <Link href="https://www.nexorystudios.com" target="_blank" className="text-emerald-600 hover:text-emerald-700">Nexory Studios</Link> | 
+            Developer: <Link href="https://www.linkedin.com/in/krish-bhagat-47512a289" target="_blank" className="text-emerald-600 hover:text-emerald-700">Krish Bhagat</Link>
+          </p>
         </div>
       </div>
     </footer>

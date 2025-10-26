@@ -6,8 +6,8 @@ export const metadata: Metadata = {
   title: "Prachin Ayurved - Authentic Ayurvedic Oils & Natural Wellness Products | Taraori, Haryana",
   description: "Discover authentic Ayurvedic oils, natural wellness products & traditional herbal formulations at Prachin Ayurved. Premium quality products from Taraori, Haryana since 2010. Call 87087-18784",
   keywords: "Prachin Ayurved, ayurvedic oils Haryana, natural wellness products, herbal oils Taraori, face oil, hair oil, pain relief oil, ayurvedic shampoo, traditional medicine, organic products, natural beauty, holistic health, ayurveda India",
-  authors: [{ name: "Prachin Ayurved" }],
-  creator: "Prachin Ayurved",
+  authors: [{ name: "Prachin Ayurved" }, { name: "Krish Bhagat", url: "https://www.linkedin.com/in/krish-bhagat-47512a289" }],
+  creator: "Nexory Studios",
   publisher: "Prachin Ayurved",
   metadataBase: new URL('https://prachinayurved.in'),
   openGraph: {
