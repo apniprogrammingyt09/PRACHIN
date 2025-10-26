@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Image from "next/image"
+import { motion } from "framer-motion"
 import { ArrowLeft, Package, User, MapPin, CreditCard, Calendar, Phone, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -55,21 +56,8 @@ export default function OrderDetailPage() {
 
   if (loading) {
     return (
-      <div className="space-y-6">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            onClick={() => router.back()}
-            className="text-green-600 hover:text-green-700"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Orders
-          </Button>
-          <div>
-            <div className="h-8 w-48 bg-gray-200 rounded animate-pulse"></div>
-          </div>
-        </div>
-        <div className="h-96 bg-gray-100 rounded animate-pulse"></div>
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
       </div>
     )
   }
@@ -127,8 +115,7 @@ export default function OrderDetailPage() {
                         alt={item.name}
                         fill
                         className="object-cover"
-                        unoptimized={true}
-                        priority={false}
+                        unoptimized={item.image ? true : false}
                       />
                     </div>
                     <div className="flex-grow">
