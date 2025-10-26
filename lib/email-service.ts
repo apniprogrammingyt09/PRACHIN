@@ -106,7 +106,7 @@ export async function sendContactFormEmail(formData: {
     // Send admin notification
     const adminInfo = await transporter.sendMail({
       from: `"Prachin Ayurved" <${process.env.EMAIL_USER}>`,
-      to: "0808ds221063.ies@ipsacademy.org",
+      to: "prachinayurvedindia@gmail.com",
       replyTo: formData.email,
       subject: `New Contact Form: ${formData.name} - Prachin Ayurved`,
       html: adminEmailHtml,
@@ -258,7 +258,7 @@ export async function sendOrderConfirmationEmail(order: Order) {
 
     const adminInfo = await transporter.sendMail({
       from: `"Prachin Ayurved" <${process.env.EMAIL_USER}>`,
-      to: "0808ds221063.ies@ipsacademy.org",
+      to: "prachinayurvedindia@gmail.com",
       subject: `New Order Alert - ${order.orderNumber} | Prachin Ayurved`,
       html: adminEmailHtml,
     })
