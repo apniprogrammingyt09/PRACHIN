@@ -24,7 +24,7 @@ export function generateInvoicePDF(order: Order): jsPDF {
   // Company Details
   doc.setFontSize(9)
   doc.text("Address: 123 Wellness Street, Ayurveda Nagar, Mumbai - 400001", 20, 48)
-  doc.text("Phone:+91-7206907250 | Email: info@prachinayurved.com | Web: www.prachinayurved.com", 20, 54)
+  doc.text("Phone:+91-7206907250 | Email:prachinayurvedindia@gmail.com| Web:www.prachinayurved.in", 20, 54)
 
   // Invoice Title Box
   doc.setFillColor(74, 124, 89) // Medium green
@@ -218,7 +218,7 @@ export function generateInvoicePDF(order: Order): jsPDF {
   doc.setFontSize(8)
   doc.setFont(undefined, 'normal')
   doc.text("Your wellness is our priority. Follow us for Ayurvedic tips and knowledge.", pageWidth / 2, footerY + 12, { align: 'center' })
-  doc.text("Email: info@prachinayurved.com | Phone:+91-7206907250 | Web: www.prachinayurved.com", pageWidth / 2, footerY + 18, { align: 'center' })
+  doc.text("Email:prachinayurvedindia@gmail.com| Phone:+91-7206907250 | Web:www.prachinayurved.in", pageWidth / 2, footerY + 18, { align: 'center' })
 
   // Page number
   doc.setFontSize(7)

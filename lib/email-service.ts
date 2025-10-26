@@ -96,8 +96,8 @@ export async function sendContactFormEmail(formData: {
         </div>
         
         <div style="background: #2D5016; color: white; padding: 20px; text-align: center; border-radius: 0 0 10px 10px;">
-          <p style="margin: 0; font-size: 14px;">📧 info@prachinayurved.com | 📞+91-7206907250</p>
-          <p style="margin: 5px 0 0 0; font-size: 14px;">🌐 www.prachinayurved.com</p>
+          <p style="margin: 0; font-size: 14px;">📧prachinayurvedindia@gmail.com| 📞+91-7206907250</p>
+          <p style="margin: 5px 0 0 0; font-size: 14px;">🌐www.prachinayurved.in</p>
         </div>
       </body>
       </html>
@@ -232,8 +232,8 @@ export async function sendOrderConfirmationEmail(order: Order) {
         </div>
         
         <div style="background: #2D5016; color: white; padding: 20px; text-align: center; border-radius: 0 0 10px 10px;">
-          <p style="margin: 0; font-size: 14px;">📧 info@prachinayurved.com | 📞+91-7206907250</p>
-          <p style="margin: 5px 0 0 0; font-size: 14px;">🌐 www.prachinayurved.com</p>
+          <p style="margin: 0; font-size: 14px;">📧prachinayurvedindia@gmail.com| 📞+91-7206907250</p>
+          <p style="margin: 5px 0 0 0; font-size: 14px;">🌐www.prachinayurved.in</p>
           <p style="margin: 10px 0 0 0; font-size: 12px; opacity: 0.8;">Follow us for wellness tips and Ayurvedic knowledge</p>
         </div>
       </body>
