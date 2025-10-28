@@ -10,6 +10,7 @@ import { ProductCard } from "@/components/product-card"
 import { Badge } from "@/components/ui/badge"
 import { HeroCarousel } from "@/components/hero-carousel"
 import { TestimonialSlider } from "@/components/testimonial-slider"
+import { GallerySlider } from "@/components/gallery-slider"
 import { Star, ChevronRight, Leaf, Droplets, Heart, Truck, Shield, Eye } from "lucide-react"
 import { useData } from "@/contexts/data-context"
 
@@ -346,6 +347,17 @@ export default function HomePage() {
       </section>
 
 
+
+      {/* Gallery Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-emerald-800">Gallery</h2>
+            <p className="text-lg text-emerald-700">Explore our premium Ayurvedic products and wellness collection</p>
+          </div>
+          <GallerySlider />
+        </div>
+      </section>
 
       {/* Customer Testimonials */}
       <TestimonialSlider />
