@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 const galleryImages = [
   "/images/poster1.webp",
   "/images/poster2.webp", 
@@ -9,6 +10,8 @@ const galleryImages = [
   "/images/poster4.webp",
   "/images/poster5.webp",
   "/images/1.png",
+  "/images/2.png",
+  "/images/3.png",
 ]
 
 export function GallerySlider() {
@@ -30,7 +33,7 @@ export function GallerySlider() {
   }
 
   return (
-    <div className="w-full max-w-[1300px] h-[700px] md:h-[400px] mx-auto relative overflow-hidden">
+    <div className="w-full max-w-[1300px] h-[250px] sm:h-[300px] md:h-[400px] lg:h-[450px] mx-auto relative overflow-hidden rounded-2xl">
       <div 
         className="absolute top-0 left-0 h-full flex transition-all duration-1000 ease-in-out"
         style={{ transform: `translateX(-${active * 100}%)` }}
@@ -42,7 +45,7 @@ export function GallerySlider() {
               alt={`Gallery image ${index + 1}`}
               width={1300}
               height={700}
-              className="w-full h-full object-contain p-4"
+              className="w-full h-full object-contain p-2 sm:p-4 md:p-6"
               priority={index === 0}
             />
           </div>
