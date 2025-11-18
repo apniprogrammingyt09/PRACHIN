@@ -41,6 +41,10 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     usage: "",
     skinType: [] as string[],
     volume: "",
+    packageLength: "",
+    packageBreadth: "",
+    packageHeight: "",
+    packageWeight: "",
   })
 
   const allergenOptions = ["Sesame", "Nuts", "Dairy", "Soy", "Sulfites"]
@@ -90,6 +94,10 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
         usage: product.usage || "",
         skinType: product.skinType || [],
         volume: product.volume || "",
+        packageLength: product.packageLength?.toString() || "",
+        packageBreadth: product.packageBreadth?.toString() || "",
+        packageHeight: product.packageHeight?.toString() || "",
+        packageWeight: product.packageWeight?.toString() || "",
       })
     } catch (error) {
       console.error("Error fetching product:", error)
@@ -562,6 +570,56 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                       placeholder="e.g., 30ml, 100ml, 250ml"
                       className="mt-1 border-green-200 focus-visible:ring-[#4A7C59]"
                     />
+                  </div>
+
+                  <div>
+                    <Label className="text-[#2D5016] mb-2 block">Package Dimensions (for shipping)</Label>
+                    <div className="grid grid-cols-3 gap-2 mb-2">
+                      <div>
+                        <Label htmlFor="packageLength" className="text-sm text-[#4A7C59]">Length (cm)</Label>
+                        <Input
+                          id="packageLength"
+                          name="packageLength"
+                          value={formData.packageLength}
+                          onChange={handleNumberChange}
+                          placeholder="10"
+                          className="mt-1 border-green-200 focus-visible:ring-[#4A7C59]"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="packageBreadth" className="text-sm text-[#4A7C59]">Breadth (cm)</Label>
+                        <Input
+                          id="packageBreadth"
+                          name="packageBreadth"
+                          value={formData.packageBreadth}
+                          onChange={handleNumberChange}
+                          placeholder="10"
+                          className="mt-1 border-green-200 focus-visible:ring-[#4A7C59]"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="packageHeight" className="text-sm text-[#4A7C59]">Height (cm)</Label>
+                        <Input
+                          id="packageHeight"
+                          name="packageHeight"
+                          value={formData.packageHeight}
+                          onChange={handleNumberChange}
+                          placeholder="5"
+                          className="mt-1 border-green-200 focus-visible:ring-[#4A7C59]"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <Label htmlFor="packageWeight" className="text-sm text-[#4A7C59]">Package Weight (kg)</Label>
+                      <Input
+                        id="packageWeight"
+                        name="packageWeight"
+                        value={formData.packageWeight}
+                        onChange={handleNumberChange}
+                        placeholder="0.5"
+                        className="mt-1 border-green-200 focus-visible:ring-[#4A7C59]"
+                      />
+                    </div>
                   </div>
 
                   <div>

@@ -81,6 +81,8 @@ export default function TrackOrderPage() {
   const [loading, setLoading] = useState(false)
   const [notFound, setNotFound] = useState(false)
   const [refreshingPayment, setRefreshingPayment] = useState(false)
+  const [tracking, setTracking] = useState<any>(null)
+  const [trackingLoading, setTrackingLoading] = useState(false)
   const { toast } = useToast()
 
   const handleTrackOrder = async () => {
@@ -103,6 +105,10 @@ export default function TrackOrderPage() {
 
       if (foundOrder) {
         setOrder(foundOrder)
+        // Fetch Shiprocket tracking if shipment exists
+        if (foundOrder.shiprocket?.shipmentId) {
+          fetchShiprocketTracking(foundOrder._id)
+        }
       } else {
         setNotFound(true)
       }
@@ -115,6 +121,26 @@ export default function TrackOrderPage() {
       })
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchShiprocketTracking = async (orderId: string) => {
+    setTrackingLoading(true)
+    try {
+      const response = await fetch('/api/shipping/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId })
+      })
+      const result = await response.json()
+      
+      if (result.ready && result.tracking) {
+        setTracking(result.tracking)
+      }
+    } catch (error) {
+      console.error('Error fetching tracking:', error)
+    } finally {
+      setTrackingLoading(false)
     }
   }
 
@@ -394,103 +420,102 @@ export default function TrackOrderPage() {
             {/* Payment Status Card */}
             <PaymentStatusCard order={order} />
 
-            {/* Order Progress Timeline */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-green-800">Order Progress</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  {["pending", "confirmed", "preparing", "ready", "out_for_delivery", "delivered"].map(
-                    (status, index) => {
-                      const Icon = statusIcons[status as keyof typeof statusIcons]
-                      const label = statusLabels[status as keyof typeof statusLabels]
-                      const isCompleted = Object.keys(statusLabels).indexOf(order.status) >= index
-                      const isCurrent = order.status === status
-                      const isLast = index === 5
-
-                      return (
-                        <div key={status} className="relative flex items-start">
-                          {/* Timeline Line */}
-                          {!isLast && (
-                            <div className="absolute left-6 top-12 w-0.5 h-16 bg-gray-200">
-                              <div 
-                                className={`w-full transition-all duration-500 ${
-                                  isCompleted ? "bg-emerald-600 h-full" : "bg-gray-200 h-0"
-                                }`}
-                              ></div>
-                            </div>
-                          )}
-                          
-                          {/* Timeline Node */}
-                          <div className="flex-shrink-0 relative z-10">
-                            <div
-                              className={`
-                                w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300
-                                ${isCompleted 
-                                  ? "bg-emerald-600 text-white shadow-lg" 
-                                  : "bg-gray-200 text-gray-500"
-                                }
-                                ${isCurrent 
-                                  ? "ring-4 ring-emerald-100 scale-110 shadow-xl" 
-                                  : ""
-                                }
-                              `}
-                            >
-                              <Icon className="h-5 w-5" />
-                            </div>
-                          </div>
-                          
-                          {/* Timeline Content */}
-                          <div className="ml-6 flex-1">
-                            <div 
-                              className={`
-                                p-4 rounded-lg border-2 transition-all duration-300
-                                ${isCompleted 
-                                  ? "bg-emerald-50 border-emerald-200" 
-                                  : "bg-gray-50 border-gray-200"
-                                }
-                                ${isCurrent 
-                                  ? "shadow-md border-emerald-300 bg-emerald-100" 
-                                  : ""
-                                }
-                              `}
-                            >
-                              <h4 
-                                className={`font-semibold text-sm ${
-                                  isCompleted ? "text-emerald-800" : "text-gray-600"
-                                }`}
-                              >
-                                {label}
-                              </h4>
-                              <p 
-                                className={`text-xs mt-1 ${
-                                  isCompleted ? "text-emerald-600" : "text-gray-500"
-                                }`}
-                              >
-                                {status === "pending" && "Your order has been placed successfully"}
-                                {status === "confirmed" && "Order confirmed and payment verified"}
-                                {status === "preparing" && "Your wellness products are being prepared"}
-                                {status === "ready" && "Order is ready for pickup or dispatch"}
-                                {status === "out_for_delivery" && "Your order is on the way"}
-                                {status === "delivered" && "Order delivered successfully"}
-                              </p>
-                              {isCurrent && (
-                                <div className="mt-2">
-                                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-emerald-600 text-white">
-                                    Current Status
-                                  </span>
+            {/* Shiprocket Tracking */}
+            {order.shiprocket?.shipmentId && (
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-green-800 flex items-center gap-2">
+                      <Truck className="h-5 w-5" />
+                      Live Tracking
+                    </CardTitle>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => fetchShiprocketTracking(order._id)}
+                      disabled={trackingLoading}
+                      className="border-green-200 text-green-700 hover:bg-green-50"
+                    >
+                      <RefreshCw className={`h-4 w-4 mr-1 ${trackingLoading ? "animate-spin" : ""}`} />
+                      Refresh
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {trackingLoading ? (
+                    <div className="flex items-center justify-center py-8">
+                      <RefreshCw className="h-6 w-6 animate-spin text-green-600 mr-2" />
+                      <span className="text-green-600">Loading tracking information...</span>
+                    </div>
+                  ) : tracking ? (
+                    <div className="space-y-4">
+                      <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="font-semibold text-green-800">Current Status</h4>
+                          <Badge className="bg-green-100 text-green-800">
+                            {tracking.track_status_name || tracking.current_status_name}
+                          </Badge>
+                        </div>
+                        {tracking.expected_delivery_date && (
+                          <p className="text-green-600 text-sm">
+                            Expected Delivery: {new Date(tracking.expected_delivery_date).toLocaleDateString()}
+                          </p>
+                        )}
+                        {order.shiprocket.awbCode && (
+                          <p className="text-green-600 text-sm">
+                            AWB Code: <span className="font-mono">{order.shiprocket.awbCode}</span>
+                          </p>
+                        )}
+                        {order.shiprocket.courierName && (
+                          <p className="text-green-600 text-sm">
+                            Courier: {order.shiprocket.courierName}
+                          </p>
+                        )}
+                      </div>
+                      
+                      {tracking.shipment_track && tracking.shipment_track.length > 0 && (
+                        <div>
+                          <h4 className="font-semibold text-green-800 mb-3">Tracking History</h4>
+                          <div className="space-y-3">
+                            {tracking.shipment_track.map((track: any, index: number) => (
+                              <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                                <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
+                                <div className="flex-1">
+                                  <div className="flex items-center justify-between mb-1">
+                                    <h5 className="font-medium text-green-800">
+                                      {track.status_name || track.activity}
+                                    </h5>
+                                    <span className="text-xs text-green-600">
+                                      {new Date(track.date).toLocaleDateString()}
+                                    </span>
+                                  </div>
+                                  <p className="text-sm text-green-600">
+                                    {new Date(track.date).toLocaleTimeString()}
+                                  </p>
+                                  {track.location && (
+                                    <p className="text-sm text-green-600 flex items-center mt-1">
+                                      <MapPin className="h-3 w-3 mr-1" />
+                                      {track.location}
+                                    </p>
+                                  )}
                                 </div>
-                              )}
-                            </div>
+                              </div>
+                            ))}
                           </div>
                         </div>
-                      )
-                    },
+                      )}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-green-600">
+                      <Truck className="h-12 w-12 mx-auto mb-2 text-green-400" />
+                      <p>Click refresh to load live tracking information</p>
+                    </div>
                   )}
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            )}
+
+
 
             {/* Order Items */}
             <Card>
@@ -552,7 +577,7 @@ export default function TrackOrderPage() {
             </Card>
 
             {/* Estimated Delivery */}
-            {order.status !== "delivered" && order.status !== "cancelled" && (
+            {order.status !== "delivered" && order.status !== "cancelled" && !tracking && (
               <Card className="bg-green-50">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-4">
@@ -562,13 +587,15 @@ export default function TrackOrderPage() {
                     <div>
                       <h4 className="font-medium text-green-800">Estimated Delivery</h4>
                       <p className="text-green-600">
-                        {order.status === "out_for_delivery"
-                          ? "Your Ayurvedic oils and shampoo are on the way! Expected delivery within 2-3 business days."
-                          : order.status === "ready"
-                            ? "Your premium Ayurvedic products are ready for dispatch. Expected delivery in 3-5 business days."
-                            : order.status === "preparing"
-                              ? "Your natural oils and shampoo are being carefully prepared and quality checked. Expected delivery in 4-6 business days."
-                              : "Your Ayurvedic wellness products will be processed and shipped within 1-2 business days."}
+                        {order.shiprocket?.shipmentId
+                          ? "Your order has been shipped. Live tracking information is available above."
+                          : order.status === "out_for_delivery"
+                            ? "Your Ayurvedic oils and shampoo are on the way! Expected delivery within 2-3 business days."
+                            : order.status === "ready"
+                              ? "Your premium Ayurvedic products are ready for dispatch. Expected delivery in 3-5 business days."
+                              : order.status === "preparing"
+                                ? "Your natural oils and shampoo are being carefully prepared and quality checked. Expected delivery in 4-6 business days."
+                                : "Your Ayurvedic wellness products will be processed and shipped within 1-2 business days."}
                       </p>
                     </div>
                   </div>

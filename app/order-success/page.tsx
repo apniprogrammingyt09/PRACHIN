@@ -4,48 +4,18 @@ import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { CheckCircle, ShoppingBag, Home, Download, Loader2 } from "lucide-react"
-import { useState } from "react"
+import { CheckCircle, ShoppingBag, Home } from "lucide-react"
 
 function OrderSuccessContent() {
   const searchParams = useSearchParams()
   const orderNumber = searchParams.get("orderNumber")
   const orderId = searchParams.get("orderId")
-  const [isDownloading, setIsDownloading] = useState(false)
+
 
   // Generate a fallback order number if none provided
   const displayOrderNumber = orderNumber || `ORD-${Math.floor(100000 + Math.random() * 900000)}`
 
-  const handleDownloadInvoice = async () => {
-    if (!orderId) return
 
-    setIsDownloading(true)
-    try {
-      // Add a small delay to show loading state
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      const response = await fetch(`/api/invoice/${orderId}`)
-      if (response.ok) {
-        const blob = await response.blob()
-        const url = window.URL.createObjectURL(blob)
-        const a = document.createElement("a")
-        a.href = url
-        a.download = `invoice-${displayOrderNumber}.pdf`
-        document.body.appendChild(a)
-        a.click()
-        window.URL.revokeObjectURL(url)
-        document.body.removeChild(a)
-      } else {
-        console.error("Failed to download invoice")
-        alert("Failed to download invoice. Please try again.")
-      }
-    } catch (error) {
-      console.error("Error downloading invoice:", error)
-      alert("Error downloading invoice. Please check your connection and try again.")
-    } finally {
-      setIsDownloading(false)
-    }
-  }
 
   return (
     <div className="bg-[#FFF9F0] min-h-[80vh] flex items-center justify-center py-16">
@@ -83,35 +53,7 @@ function OrderSuccessContent() {
             </p>
           </div>
 
-          {orderId && (
-            <div className="mb-6">
-              <Button
-                onClick={handleDownloadInvoice}
-                disabled={isDownloading}
-                className="w-full bg-[#4A7C59] hover:bg-[#2D5016] text-white relative"
-              >
-                {isDownloading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Generating Invoice...
-                  </>
-                ) : (
-                  <>
-                    <Download className="mr-2 h-4 w-4" />
-                    Download Invoice
-                  </>
-                )}
-              </Button>
-              {isDownloading && (
-                <div className="mt-2 text-center">
-                  <div className="text-sm text-[#4A7C59] mb-2">Please wait while we prepare your invoice</div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-[#4A7C59] h-2 rounded-full animate-pulse" style={{ width: '70%' }}></div>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
+
 
           <div className="space-y-4">
             <p className="text-[#2D5016]">

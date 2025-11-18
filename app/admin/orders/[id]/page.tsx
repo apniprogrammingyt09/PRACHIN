@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { ArrowLeft, Package, User, MapPin, CreditCard, Calendar, Phone, Mail } from "lucide-react"
+import { ArrowLeft, Package, User, MapPin, CreditCard, Calendar, Phone, Mail, RefreshCw, Truck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -29,6 +29,148 @@ const statusLabels = {
   out_for_delivery: "Out for Delivery",
   delivered: "Delivered",
   cancelled: "Cancelled",
+}
+
+function TrackingSection({ orderId }: { orderId: string }) {
+  const [tracking, setTracking] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
+  const [ready, setReady] = useState(true)
+
+  const fetchTracking = async () => {
+    setLoading(true)
+    try {
+      const response = await fetch('/api/shipping/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId })
+      })
+      const result = await response.json()
+      
+      if (result.ready) {
+        setTracking(result.tracking)
+        setReady(true)
+      } else {
+        setReady(false)
+      }
+    } catch (error) {
+      console.error('Error fetching tracking:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (!ready) {
+    return (
+      <div className="text-center py-4 text-[#A67C52]">
+        Order is not ready for tracking yet
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-3">
+      <Button 
+        onClick={fetchTracking}
+        disabled={loading}
+        variant="outline"
+        className="w-full"
+      >
+        {loading ? (
+          <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+        ) : (
+          <Package className="h-4 w-4 mr-2" />
+        )}
+        {loading ? 'Loading...' : 'Track Shipment'}
+      </Button>
+      
+      {tracking && (
+        <div className="bg-[#FFF9F0] p-4 rounded-lg border border-[#E8DCCA] space-y-4">
+          {/* Shipment Overview */}
+          {tracking.shipment_track?.[0] && (
+            <div className="bg-white p-3 rounded border">
+              <div className="font-medium text-[#8B4513] mb-2">Current Status</div>
+              <div className="text-lg font-semibold text-green-700">
+                {tracking.shipment_track[0].current_status}
+              </div>
+              <div className="grid grid-cols-2 gap-2 mt-2 text-sm text-[#A67C52]">
+                <div>AWB: {tracking.shipment_track[0].awb_code}</div>
+                <div>Weight: {tracking.shipment_track[0].weight}kg</div>
+                <div>Origin: {tracking.shipment_track[0].origin}</div>
+                <div>Destination: {tracking.shipment_track[0].destination}</div>
+                {tracking.shipment_track[0].edd && (
+                  <div className="col-span-2">EDD: {new Date(tracking.shipment_track[0].edd).toLocaleDateString()}</div>
+                )}
+              </div>
+            </div>
+          )}
+          
+          {/* Tracking Activities */}
+          {tracking.shipment_track_activities && tracking.shipment_track_activities.length > 0 && (
+            <div>
+              <div className="font-medium text-[#8B4513] mb-2">Tracking Timeline</div>
+              <div className="space-y-3 max-h-64 overflow-y-auto">
+                {tracking.shipment_track_activities.map((activity: any, index: number) => (
+                  <div key={index} className="flex gap-3 p-3 bg-white rounded border-l-4 border-green-400">
+                    <div className="flex-shrink-0 w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                    <div className="flex-1">
+                      <div className="font-medium text-[#8B4513]">{activity.activity}</div>
+                      <div className="text-sm text-[#A67C52] mt-1">
+                        📍 {activity.location}
+                      </div>
+                      <div className="text-xs text-gray-500 mt-1">
+                        {new Date(activity.date).toLocaleString()}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {/* Track URL */}
+          {tracking.track_url && (
+            <div className="text-center">
+              <a 
+                href={tracking.track_url} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-800 underline text-sm"
+              >
+                Track on Shiprocket →
+              </a>
+            </div>
+          )}
+        </div>
+      )}
+      
+      <div className="grid grid-cols-1 gap-2">
+        <Button 
+          onClick={async () => {
+            try {
+              const response = await fetch('/api/shipping/invoice', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ orderId })
+              })
+              const result = await response.json()
+              if (result.success && result.invoiceResult.invoice_url) {
+                window.open(result.invoiceResult.invoice_url, '_blank')
+              } else {
+                alert('Failed to generate invoice')
+              }
+            } catch (error) {
+              alert('Error generating invoice')
+            }
+          }}
+          variant="outline"
+          size="sm"
+          className="text-xs"
+        >
+          Print Invoice
+        </Button>
+      </div>
+    </div>
+  )
 }
 
 export default function OrderDetailPage() {
@@ -233,6 +375,50 @@ export default function OrderDetailPage() {
                     <span className="font-medium">Payment ID</span>
                   </div>
                   <p className="text-green-800 text-sm break-all">{order.razorpayPayment.paymentId}</p>
+                </div>
+              )}
+              
+              {order.selectedCourier && (
+                <div>
+                  <div className="flex items-center gap-2 text-green-600 mb-1">
+                    <Truck className="h-4 w-4" />
+                    <span className="font-medium">Selected Courier</span>
+                  </div>
+                  <p className="text-green-800">
+                    {typeof order.selectedCourier === 'object' 
+                      ? order.selectedCourier.name 
+                      : order.selectedCourier}
+                  </p>
+                  {typeof order.selectedCourier === 'object' && order.selectedCourier.rate && (
+                    <p className="text-sm text-green-600">Rate: ₹{order.selectedCourier.rate}</p>
+                  )}
+                </div>
+              )}
+              
+              {order.status === 'confirmed' && !order.shiprocket?.orderId && (
+                <Button 
+                  onClick={() => router.push(`/admin/orders/${order._id}/shipment`)}
+                  className="w-full bg-green-600 hover:bg-green-700"
+                >
+                  Ship Order
+                </Button>
+              )}
+              
+              {order.shiprocket?.orderId && (
+                <div className="space-y-2">
+                  <div className="text-sm">
+                    <span className="font-medium text-green-600">Shiprocket Order ID:</span>
+                    <p className="text-green-800">{order.shiprocket.orderId}</p>
+                  </div>
+                  <div className="text-sm">
+                    <span className="font-medium text-green-600">Shipment ID:</span>
+                    <p className="text-green-800">{order.shiprocket.shipmentId}</p>
+                  </div>
+                  <div className="text-sm">
+                    <span className="font-medium text-green-600">Status:</span>
+                    <p className="text-green-800">{order.shiprocket.status}</p>
+                  </div>
+                  <TrackingSection orderId={order._id} />
                 </div>
               )}
             </CardContent>

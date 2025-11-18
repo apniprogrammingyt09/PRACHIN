@@ -44,6 +44,9 @@ export default function CheckoutPage() {
   const [isValidatingCoupon, setIsValidatingCoupon] = useState(false)
   const [isRazorpayLoaded, setIsRazorpayLoaded] = useState(false)
   const [razorpayConfig, setRazorpayConfig] = useState<any>(null)
+  const [couriers, setCouriers] = useState<any[]>([])
+  const [selectedCourier, setSelectedCourier] = useState<any>(null)
+  const [loadingCouriers, setLoadingCouriers] = useState(false)
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -101,6 +104,63 @@ export default function CheckoutPage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+    
+    // Auto-fetch city and state, then couriers when pincode changes
+    if (name === 'pincode' && value.length === 6) {
+      fetchPincodeData(value)
+    }
+  }
+
+  const fetchPincodeData = async (pincode: string) => {
+    try {
+      const response = await fetch(`/api/pincode?pincode=${pincode}`)
+      const result = await response.json()
+      
+      if (result.success) {
+        setFormData(prev => ({
+          ...prev,
+          city: result.city,
+          state: result.state
+        }))
+        
+        // Fetch couriers after setting city/state
+        fetchCouriers(pincode)
+      }
+    } catch (error) {
+      console.error('Error fetching pincode data:', error)
+      // Still fetch couriers even if pincode lookup fails
+      fetchCouriers(pincode)
+    }
+  }
+
+  const fetchCouriers = async (pincode: string) => {
+    setLoadingCouriers(true)
+    try {
+      const response = await fetch('/api/shipping/serviceability', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          delivery_postcode: parseInt(pincode),
+          weight: 0.5,
+          cod: paymentMethod === 'cod' ? 1 : 0,
+          declared_value: totals.total
+        })
+      })
+      
+      const result = await response.json()
+      if (result.success) {
+        setCouriers(result.couriers)
+        // Auto-select recommended courier
+        const recommended = result.couriers.find((c: any) => c.id === result.recommended_courier_id)
+        if (recommended) {
+          setSelectedCourier(recommended)
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching couriers:', error)
+    } finally {
+      setLoadingCouriers(false)
+    }
   }
 
   const validateCoupon = async () => {
@@ -173,10 +233,10 @@ export default function CheckoutPage() {
 
   const calculateTotals = () => {
     const subtotal = totalPrice
-    const deliveryFee = 0
+    const deliveryFee = selectedCourier ? selectedCourier.rate : 0
     const tax = 0
     const discount = appliedCoupon ? appliedCoupon.discountAmount : 0
-    const total = subtotal - discount
+    const total = subtotal + deliveryFee - discount
 
     return {
       subtotal,
@@ -314,6 +374,17 @@ export default function CheckoutPage() {
       return
     }
 
+    // Validate courier selection
+    if (formData.pincode.length === 6 && couriers.length > 0 && !selectedCourier) {
+      toast({
+        title: "Select Delivery Option",
+        description: "Please select a delivery option to continue.",
+        variant: "destructive",
+      })
+      setIsSubmitting(false)
+      return
+    }
+
     try {
       const orderData = {
         customer: {
@@ -345,6 +416,15 @@ export default function CheckoutPage() {
               id: appliedCoupon.id,
               code: appliedCoupon.code,
               discountAmount: appliedCoupon.discountAmount,
+            }
+          : undefined,
+        selectedCourier: selectedCourier
+          ? {
+              id: selectedCourier.id,
+              name: selectedCourier.name,
+              rate: selectedCourier.rate,
+              estimated_delivery_days: selectedCourier.estimated_delivery_days,
+              etd: selectedCourier.etd,
             }
           : undefined,
       }
@@ -530,19 +610,6 @@ export default function CheckoutPage() {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
-                        <Label htmlFor="city" className="text-[#8B4513]">
-                          City*
-                        </Label>
-                        <Input
-                          id="city"
-                          name="city"
-                          value={formData.city}
-                          onChange={handleChange}
-                          required
-                          className="mt-1 border-[#E8DCCA] focus-visible:ring-[#D4915D]"
-                        />
-                      </div>
-                      <div>
                         <Label htmlFor="pincode" className="text-[#8B4513]">
                           Pincode*
                         </Label>
@@ -552,26 +619,93 @@ export default function CheckoutPage() {
                           value={formData.pincode}
                           onChange={handleChange}
                           required
+                          maxLength={6}
+                          placeholder="Enter 6-digit pincode"
                           className="mt-1 border-[#E8DCCA] focus-visible:ring-[#D4915D]"
                         />
                       </div>
                       <div>
+                        <Label htmlFor="city" className="text-[#8B4513]">
+                          City* <span className="text-xs text-[#A67C52]">(Auto-filled)</span>
+                        </Label>
+                        <Input
+                          id="city"
+                          name="city"
+                          value={formData.city}
+                          readOnly
+                          required
+                          className="mt-1 border-[#E8DCCA] bg-gray-50 text-gray-700"
+                          placeholder="Will be filled automatically"
+                        />
+                      </div>
+                      <div>
                         <Label htmlFor="state" className="text-[#8B4513]">
-                          State*
+                          State* <span className="text-xs text-[#A67C52]">(Auto-filled)</span>
                         </Label>
                         <Input
                           id="state"
                           name="state"
                           value={formData.state}
-                          onChange={handleChange}
+                          readOnly
                           required
-                          className="mt-1 border-[#E8DCCA] focus-visible:ring-[#D4915D]"
+                          className="mt-1 border-[#E8DCCA] bg-gray-50 text-gray-700"
+                          placeholder="Will be filled automatically"
                         />
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+
+              {/* Courier Selection */}
+              {formData.pincode.length === 6 && (
+                <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
+                  <div className="p-6">
+                    <h2 className="text-xl font-bold text-[#8B4513] mb-4">Select Delivery Option</h2>
+                    {loadingCouriers ? (
+                      <div className="flex items-center justify-center py-8">
+                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#D4915D]" />
+                        <span className="ml-2 text-[#8B4513]">Loading delivery options...</span>
+                      </div>
+                    ) : couriers.length > 0 ? (
+                      <RadioGroup 
+                        value={selectedCourier?.id?.toString()} 
+                        onValueChange={(value) => {
+                          const courier = couriers.find(c => c.id.toString() === value)
+                          setSelectedCourier(courier)
+                        }}
+                        className="space-y-3"
+                      >
+                        {couriers.map((courier) => (
+                          <div key={courier.id} className="flex items-center space-x-3 p-3 border border-[#E8DCCA] rounded-lg hover:bg-[#FFF9F0]">
+                            <RadioGroupItem value={courier.id.toString()} id={`courier-${courier.id}`} className="text-[#D4915D]" />
+                            <Label htmlFor={`courier-${courier.id}`} className="flex-1 cursor-pointer">
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <div className="font-medium text-[#8B4513]">{courier.name}</div>
+                                  <div className="text-sm text-[#A67C52]">
+                                    Delivery in {courier.estimated_delivery_days} days • Expected by {courier.etd}
+                                  </div>
+                                </div>
+                                <div className="text-right">
+                                  <div className="font-bold text-[#D4915D]">₹{courier.rate}</div>
+                                  {courier.rating && (
+                                    <div className="text-xs text-[#A67C52]">★ {courier.rating}</div>
+                                  )}
+                                </div>
+                              </div>
+                            </Label>
+                          </div>
+                        ))}
+                      </RadioGroup>
+                    ) : (
+                      <div className="text-center py-8 text-[#A67C52]">
+                        No delivery options available for this pincode
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
 
               <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
                 <div className="p-6">
@@ -729,6 +863,13 @@ export default function CheckoutPage() {
                     <span className="text-[#A67C52]">Subtotal ({totalItems} items)</span>
                     <span className="text-[#8B4513]">₹{totals.subtotal.toFixed(2)}</span>
                   </div>
+                  
+                  {selectedCourier && (
+                    <div className="flex justify-between">
+                      <span className="text-[#A67C52]">Delivery ({selectedCourier.name})</span>
+                      <span className="text-[#8B4513]">₹{totals.deliveryFee.toFixed(2)}</span>
+                    </div>
+                  )}
 
                   {totals.discount > 0 && (
                     <div className="flex justify-between">
@@ -750,6 +891,11 @@ export default function CheckoutPage() {
                   form="checkout-form"
                   className="w-full bg-[#8B4513] hover:bg-[#7A3A0D] text-white"
                   disabled={isSubmitting || (paymentMethod === "razorpay" && (!isRazorpayLoaded || !razorpayConfig))}
+                  onClick={(e) => {
+                    if (paymentMethod === "razorpay" && !isSubmitting) {
+                      alert("After completing the payment, please wait for the confirmation message. Do not close the browser or navigate away until you see the order confirmation.")
+                    }
+                  }}
                 >
                   {isSubmitting ? "Processing..." : paymentMethod === "razorpay" ? "Pay Online" : "Place Order"}
                 </Button>

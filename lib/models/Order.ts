@@ -32,6 +32,38 @@ export interface RazorpayPayment {
   status?: string
 }
 
+export interface ShiprocketData {
+  orderId?: number
+  shipmentId?: number
+  status?: string
+  statusCode?: number
+  onboardingCompletedNow?: number
+  awbCode?: string
+  courierCompanyId?: number
+  courierName?: string
+  awbAssignStatus?: number
+  assignedDateTime?: string
+  appliedWeight?: number
+  pickupScheduledDate?: string
+  invoiceNo?: string
+  pickupStatus?: number
+  pickupTokenNumber?: string
+  pickupGeneratedDate?: string
+  pickupData?: string
+  trackingUrl?: string
+  fullResponse?: any
+  awbResponse?: any
+  pickupResponse?: any
+}
+
+export interface SelectedCourier {
+  id: number
+  name: string
+  rate: number
+  estimated_delivery_days: string
+  etd: string
+}
+
 export interface Order {
   _id: ObjectId
   orderNumber: string
@@ -48,6 +80,8 @@ export interface Order {
   notes?: string
   coupon?: OrderCoupon
   razorpayPayment?: RazorpayPayment
+  shiprocket?: ShiprocketData
+  selectedCourier?: SelectedCourier
   createdAt: Date
   updatedAt: Date
 }
@@ -64,4 +98,5 @@ export interface CreateOrderData {
   notes?: string
   coupon?: OrderCoupon
   razorpayPayment?: RazorpayPayment
+  selectedCourier?: SelectedCourier
 }
