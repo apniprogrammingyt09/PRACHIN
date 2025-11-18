@@ -197,22 +197,7 @@ export default function AdminLogin() {
             </form>
 
             {/* Demo Credentials */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 text-center"
-            >
-              <p className="text-sm text-emerald-700 mb-2 font-medium">Default Credentials:</p>
-              <div className="space-y-1 text-xs">
-                <p className="text-emerald-800">
-                  <span className="font-medium">Username:</span> admin
-                </p>
-                <p className="text-emerald-800">
-                  <span className="font-medium">Password:</span> ayurved123
-                </p>
-              </div>
-            </motion.div>
+
 
             {/* Back to Site */}
             <div className="text-center">
